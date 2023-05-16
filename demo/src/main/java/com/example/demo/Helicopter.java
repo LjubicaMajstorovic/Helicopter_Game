@@ -24,7 +24,6 @@ public class Helicopter extends Group {
     private Translate position;
     private double speed;
     private double maxSpeed = 400.0;
-    private Group elisBigGroup;
     private Ellipse cockpit;
     private Rectangle tail;
     private Rectangle horizontalPartOfTail;
@@ -37,25 +36,22 @@ public class Helicopter extends Group {
     private Group helicopterBody;
     private boolean noFuel;
     private boolean parked;
-    private ScaleTransition scaleHelicopterTransition;
+    private boolean elisRotate;
     private Scale scaleHelicopter;
-    private double scale = 0.75;
-    private double oldScale;
-    private boolean first = false;
-    double width;
-    double height;
-    private Elis myElis;
 
+    private double width;
+    private double height;
     private Scale[] scaleElis;
 
-    public Helicopter(double width, double height, Elis elis) {
-        this.myElis = elis;
+
+    public Helicopter(double width, double height) {
 
         this.width = width;
         this.height = height;
         this.scaleHelicopter = new Scale();
-        super.getTransforms().addAll(new Transform[]{this.scaleHelicopter});
-        this.parked = false;
+        super.getTransforms().addAll(this.scaleHelicopter);
+        this.parked = true;
+        this.elisRotate = false;
         this.noFuel = false;
         this.helicopterBody = new Group();
         this.ugaonaBrzina = 343.77467707849394;
@@ -70,12 +66,12 @@ public class Helicopter extends Group {
         this.tail = new Rectangle(tailWidth, tailHeight);
         this.tail.setFill(Color.BLUE);
         this.tail.setStroke(Color.BLUE);
-        this.tail.getTransforms().addAll(new Transform[]{new Translate(-tailWidth / 2.0, 0.0)});
+        this.tail.getTransforms().addAll(new Translate(-tailWidth / 2.0, 0.0));
         this.horizontalPartOfTail = new Rectangle(3.0 * width / 4.0, 1.5 * tailWidth);
         this.horizontalPartOfTail.setFill(Color.BLUE);
-        this.horizontalPartOfTail.getTransforms().addAll(new Transform[]{new Translate(-3.0 * width / 8.0, 10.0 * height / 18.0)});
+        this.horizontalPartOfTail.getTransforms().addAll(new Translate(-3.0 * width / 8.0, 10.0 * height / 18.0));
         this.tailGroup = new Group();
-        this.tailGroup.getChildren().addAll(new Node[]{this.tail, this.horizontalPartOfTail});
+        this.tailGroup.getChildren().addAll(this.tail, this.horizontalPartOfTail);
         double elisHeight = 1.32 * width;
         this.boundCircle = new Circle(elisHeight);
         this.boundCircle.setFill((Paint)null);
@@ -93,27 +89,25 @@ public class Helicopter extends Group {
             this.elis[i] = new Rectangle(0.14 * width, elisHeight);
             this.elis[i].getTransforms().addAll(scaleElis[i]);
             if (i == 0) {
-                this.elis[i].getTransforms().addAll(new Transform[]{new Rotate(180.0), new Translate(-0.07 * width, 0.0)});
+                this.elis[i].getTransforms().addAll(new Rotate(180.0), new Translate(-0.07 * width, 0.0));
             } else {
-                this.elis[i].getTransforms().addAll(new Transform[]{new Rotate(Math.pow(-1.0, (double)i) * 60.0), new Translate(-0.07 * width, -0.07 * width * Math.pow(1.0, (double)(i - 1)))});
+                this.elis[i].getTransforms().addAll(new Rotate(Math.pow(-1.0, (double)i) * 60.0), new Translate(-0.07 * width, -0.07 * width * Math.pow(1.0, (double)(i - 1))));
             }
 
             this.elis[i].setFill(Color.BLACK);
-            elisGroup.getChildren().addAll(new Node[]{this.elis[i]});
+            elisGroup.getChildren().addAll(this.elis[i]);
         }
 
-        this.helicopterBody.getChildren().addAll(new Node[]{this.tailGroup, this.cockpit});
+        this.helicopterBody.getChildren().addAll(this.tailGroup, this.cockpit);
         this.rotate = new Rotate(0.0);
         this.scaleHelicopter = new Scale();
         this.helicopterBody.getTransforms().addAll(rotate, scaleHelicopter);
         super.getChildren().addAll( helicopterBody);
         this.getChildren().addAll(elisGroup);
-        /*this.elisBigGroup = new Group(new Node[]{this.elisGroup});
-        this.elisBigGroup.setDisable(true);*/
-        this.elisGroup.getTransforms().addAll(new Transform[]{this.elisRotation});
+        this.elisGroup.getTransforms().addAll(this.elisRotation);
         this.direction = new Point2D(0.0, -1.0);
         this.position = new Translate();
-        super.getTransforms().addAll(new Transform[]{this.position});
+        super.getTransforms().addAll(this.position);
 
     }
 
@@ -191,33 +185,51 @@ public class Helicopter extends Group {
         this.noFuel = fuel;
     }
 
-    public void setParked(boolean parked) {
+    public void setParked() {
+        double oldScale;
+        double newScale;
+        this.parked = !this.parked;
+        if (parked){
+            oldScale = 1.33;
+            newScale = 1;
+            this.speed = 0;
+        }
+        else{
+            this.elisRotate = true;
+            oldScale = 1;
+            newScale = 1.33;
+        }
         Timeline timeline = new Timeline(
                 new KeyFrame(
                         Duration.ZERO,
-                        new KeyValue(scaleHelicopter.xProperty(), 1),
-                        new KeyValue(scaleHelicopter.yProperty(), 1),
-                        new KeyValue(scaleElis[0].xProperty(), 1),
-                        new KeyValue(scaleElis[0].yProperty(), 1),
-                        new KeyValue(scaleElis[1].xProperty(), 1),
-                        new KeyValue(scaleElis[1].yProperty(), 1),
-                        new KeyValue(scaleElis[2].xProperty(), 1),
-                        new KeyValue(scaleElis[2].yProperty(), 1)
+                        new KeyValue(scaleHelicopter.xProperty(), oldScale),
+                        new KeyValue(scaleHelicopter.yProperty(), oldScale),
+                        new KeyValue(scaleElis[0].xProperty(), oldScale),
+                        new KeyValue(scaleElis[0].yProperty(), oldScale),
+                        new KeyValue(scaleElis[1].xProperty(), oldScale),
+                        new KeyValue(scaleElis[1].yProperty(), oldScale),
+                        new KeyValue(scaleElis[2].xProperty(), oldScale),
+                        new KeyValue(scaleElis[2].yProperty(), oldScale)
                 ),
 
                 new KeyFrame(
                         Duration.seconds(1),
-                        new KeyValue(scaleHelicopter.xProperty(), 1.33),
-                        new KeyValue(scaleHelicopter.yProperty(), 1.33),
-                        new KeyValue(scaleElis[0].xProperty(), 1.33),
-                        new KeyValue(scaleElis[0].yProperty(), 1.33),
-                        new KeyValue(scaleElis[1].xProperty(), 1.33),
-                        new KeyValue(scaleElis[1].yProperty(), 1.33),
-                        new KeyValue(scaleElis[2].xProperty(), 1.33),
-                        new KeyValue(scaleElis[2].yProperty(), 1.33)
+                        new KeyValue(scaleHelicopter.xProperty(), newScale),
+                        new KeyValue(scaleHelicopter.yProperty(), newScale),
+                        new KeyValue(scaleElis[0].xProperty(), newScale),
+                        new KeyValue(scaleElis[0].yProperty(), newScale),
+                        new KeyValue(scaleElis[1].xProperty(), newScale),
+                        new KeyValue(scaleElis[1].yProperty(), newScale),
+                        new KeyValue(scaleElis[2].xProperty(), newScale),
+                        new KeyValue(scaleElis[2].yProperty(), newScale)
                 )
         );
         timeline.play();
+        timeline.setOnFinished(event->{
+            if(parked) {
+                this.elisRotate = !elisRotate;
+            }
+        });
 
 
     }
@@ -229,11 +241,12 @@ public class Helicopter extends Group {
     }
 
     public void update(double ds, double speedDamp, double left, double right, double up, double down) {
-
-        if (!this.parked) {
-
+        if(elisRotate){
             double odlAngle = this.elisRotation.getAngle();
             this.elisRotation.setAngle(odlAngle + ds * this.ugaonaBrzina);
+        }
+
+        if (!this.parked) {
 
             double oldX = this.position.getX();
             double oldY = this.position.getY();
@@ -254,12 +267,8 @@ public class Helicopter extends Group {
             }
 
 
-        } else{
-            myElis.setPosition(this.position.getX(), this.position.getY());
         }
     }
 
-    public Ellipse getCockpit() {
-        return this.cockpit;
-    }
+
 }
