@@ -3,6 +3,7 @@ package com.example.demo;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -37,7 +38,7 @@ public class HelloApplication extends Application {
         Helicopter helicopter = new Helicopter(16.875, 39.37500000000001);
 
         Helipad helipad = new Helipad(75.0, 75.0);
-        helipad.getTransforms().addAll(new Transform[]{new Translate(-37.5, -37.5)});
+        helipad.getTransforms().addAll(new Translate(-37.5, -37.5));
 
         Translate package0position = new Translate(242.5, -257.5);
         Translate package1position = new Translate(-257.5, -257.5);
@@ -51,12 +52,19 @@ public class HelloApplication extends Application {
         FuelMeter fuelMeter = new FuelMeter(75.0, helicopter);
         fuelMeter.getTransforms().addAll(new Translate(-332.4375, -332.4375));
 
+        Label label = new Label("00:00");
+        label.setStyle("-fx-text-fill: red; -fx-font-size: 20px;");
+
+        root.getChildren().addAll(label);
+        label.getTransforms().addAll(new Translate(-332.4375, 332.4375));
+        Timer clock = new Timer(label);
+        clock.start();
         root.getChildren().addAll(helipad, speedMeter, fuelMeter, helicopter);
         root.getChildren().addAll(packages);
         root.getTransforms().addAll(new Translate(375.0, 375.0));
 
         Scene scene = new Scene(root, 750.0, 750.0);
-        Boolean pakred = true;
+
 
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
             if (event.getCode().equals(KeyCode.UP)) {

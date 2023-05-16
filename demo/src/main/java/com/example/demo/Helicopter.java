@@ -23,7 +23,7 @@ public class Helicopter extends Group {
     private Rotate rotate;
     private Translate position;
     private double speed;
-    private double maxSpeed = 400.0;
+    private double maxSpeed = 300.0;
     private Ellipse cockpit;
     private Rectangle tail;
     private Rectangle horizontalPartOfTail;
@@ -246,7 +246,7 @@ public class Helicopter extends Group {
             this.elisRotation.setAngle(odlAngle + ds * this.ugaonaBrzina);
         }
 
-        if (!this.parked) {
+        if (!this.parked && !noFuel) {
 
             double oldX = this.position.getX();
             double oldY = this.position.getY();
