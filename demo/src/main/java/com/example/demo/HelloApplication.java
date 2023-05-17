@@ -30,6 +30,10 @@ public class HelloApplication extends Application {
     private static final double FUELMETER_WIDTH = 75.0;
     private static final double FUELMETER_HEIGHT = 75.0;
 
+    private static final double OBSTACLE_WIDTH = 110;
+    private static final double OBSTACLE_HEIGHT = 8;
+
+
     public HelloApplication() {
     }
 
@@ -46,6 +50,19 @@ public class HelloApplication extends Application {
         Translate package3position = new Translate(-257.5, 257.5);
         Package[] packages = new Package[]{new Package(15.0, 15.0, package0position), new Package(15.0, 15.0, package1position), new Package(15.0, 15.0, package2position), new Package(15.0, 15.0, package3position)};
 
+        Translate obstacle0position = new Translate(-OBSTACLE_WIDTH/2, -WINDOW_HEIGHT/4);
+        Translate obstacle1position = new Translate(-WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
+        Translate obstacle2position = new Translate(-OBSTACLE_WIDTH/2, WINDOW_HEIGHT/4);
+        Translate obstacle3position = new Translate(WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
+
+        Obstacle[] obstacles = new Obstacle[]{
+                new Obstacle(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, obstacle0position),
+                new Obstacle(OBSTACLE_HEIGHT, OBSTACLE_WIDTH, obstacle1position),
+                new Obstacle(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, obstacle2position),
+                new Obstacle(OBSTACLE_HEIGHT, OBSTACLE_WIDTH, obstacle3position)
+        };
+
+
         SpeedMeter speedMeter = new SpeedMeter(helicopter.getMaxSpeed(), 7.5, 675.0);
         speedMeter.getTransforms().addAll(new Translate(365.625, 0.0));
 
@@ -56,11 +73,12 @@ public class HelloApplication extends Application {
         label.setStyle("-fx-text-fill: red; -fx-font-size: 20px;");
 
         root.getChildren().addAll(label);
-        label.getTransforms().addAll(new Translate(-332.4375, 332.4375));
+        label.getTransforms().addAll(new Translate(-WINDOW_WIDTH/2.1, WINDOW_HEIGHT/2.19));
         Timer clock = new Timer(label);
         clock.start();
         root.getChildren().addAll(helipad, speedMeter, fuelMeter, helicopter);
         root.getChildren().addAll(packages);
+        root.getChildren().addAll(obstacles);
         root.getTransforms().addAll(new Translate(375.0, 375.0));
 
         Scene scene = new Scene(root, 750.0, 750.0);
@@ -72,17 +90,17 @@ public class HelloApplication extends Application {
             } else if (event.getCode().equals(KeyCode.DOWN)) {
                 helicopter.changeSpeed(-5.0);
             } else if (event.getCode().equals(KeyCode.LEFT)) {
-                helicopter.rotate(-5.0, 0.0, 750.0, 0.0, 750.0);
+                helicopter.rotate(-5.0, 0.0, 750.0, 0.0, 750.0, obstacles);
 
             } else if (event.getCode().equals(KeyCode.RIGHT)) {
-                helicopter.rotate(5.0, 0.0, 750.0, 0.0, 750.0);
+                helicopter.rotate(5.0, 0.0, 750.0, 0.0, 750.0, obstacles);
             } else if (event.getCode().equals(KeyCode.SPACE)) {
                 helicopter.setParked();
             }
 
         });
         MyTimer.IUpdatable helicopterWrapper = (ds) -> {
-            helicopter.update(ds,  0.995, 0.0, 750.0, 0.0, 750.0);
+            helicopter.update(ds,  0.995, 0.0, 750.0, 0.0, 750.0, obstacles);
 
 
             for(int i = 0; i < packages.length; ++i) {
@@ -91,6 +109,7 @@ public class HelloApplication extends Application {
                     packages[i] = null;
                 }
             }
+
 
             speedMeter.changeSpeed(helicopter.getSpeed());
             fuelMeter.takeFuel(helicopter.getSpeed());

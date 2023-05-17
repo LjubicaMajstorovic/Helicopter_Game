@@ -38,16 +38,10 @@ public class Helicopter extends Group {
     private boolean parked;
     private boolean elisRotate;
     private Scale scaleHelicopter;
-
-    private double width;
-    private double height;
     private Scale[] scaleElis;
 
 
     public Helicopter(double width, double height) {
-
-        this.width = width;
-        this.height = height;
         this.scaleHelicopter = new Scale();
         super.getTransforms().addAll(this.scaleHelicopter);
         this.parked = true;
@@ -73,9 +67,9 @@ public class Helicopter extends Group {
         this.tailGroup = new Group();
         this.tailGroup.getChildren().addAll(this.tail, this.horizontalPartOfTail);
         double elisHeight = 1.32 * width;
-        this.boundCircle = new Circle(elisHeight);
-        this.boundCircle.setFill((Paint)null);
-        this.boundCircle.setStroke((Paint)null);
+        this.boundCircle = new Circle(elisHeight*1.55);
+        this.boundCircle.setFill(null);
+        this.boundCircle.setStroke(null);
         this.elis = new Rectangle[3];
         this.elisRotation = new Rotate(0.0);
         this.elisGroup = new Group();
@@ -98,7 +92,7 @@ public class Helicopter extends Group {
             elisGroup.getChildren().addAll(this.elis[i]);
         }
 
-        this.helicopterBody.getChildren().addAll(this.tailGroup, this.cockpit);
+        this.helicopterBody.getChildren().addAll(this.tailGroup, this.cockpit, this.boundCircle);
         this.rotate = new Rotate(0.0);
         this.scaleHelicopter = new Scale();
         this.helicopterBody.getTransforms().addAll(rotate, scaleHelicopter);
@@ -111,15 +105,15 @@ public class Helicopter extends Group {
 
     }
 
-    private boolean isWallHit(double left, double right, double up, double down) {
-        Bounds cockpitBounds = this.cockpit.localToScene ( this.cockpit.getBoundsInLocal ( ) );
+    private boolean isWallOrObstaclesHit(double left, double right, double up, double down, Obstacle[] obstacles) {
+        Bounds cockpitBounds = this.boundCircle.localToScene ( this.boundCircle.getBoundsInLocal ( ) );
         Bounds tailBounds    = this.tail.localToScene ( this.tail.getBoundsInLocal ( ) );
         Bounds horizontalPartBounds = this.horizontalPartOfTail.localToScene(this.horizontalPartOfTail.getBoundsInLocal());
 
-        double cockpitMinX = cockpitBounds.getCenterX ( ) - this.cockpit.getRadiusX ( );
-        double cockpitMaxX = cockpitBounds.getCenterX ( ) + this.cockpit.getRadiusX ( );
-        double cockpitMinY = cockpitBounds.getCenterY ( ) - this.cockpit.getRadiusY ( );
-        double cockpitMaxY = cockpitBounds.getCenterY ( ) + this.cockpit.getRadiusY ( );
+        double cockpitMinX = cockpitBounds.getCenterX ( ) - this.boundCircle.getRadius ( );
+        double cockpitMaxX = cockpitBounds.getCenterX ( ) + this.boundCircle.getRadius ( );
+        double cockpitMinY = cockpitBounds.getCenterY ( ) - this.boundCircle.getRadius ( );
+        double cockpitMaxY = cockpitBounds.getCenterY ( ) + this.boundCircle.getRadius ( );
 
         boolean cockpitWallHit = cockpitMinX <= left || cockpitMaxX >= right || cockpitMinY <= up || cockpitMaxY >= down;
 
@@ -130,20 +124,36 @@ public class Helicopter extends Group {
 
         boolean tailWallHit = tailMinX <= left || tailMaxX >= right || tailMinY <= up || tailMaxY >= down;
 
+        double minX = tailMinX < cockpitMinX ? tailMinX : cockpitMinX;
+        double maxX = tailMaxX > cockpitMaxX ? tailMaxX : cockpitMaxX;
+        double minY = tailMinY > cockpitMinY ? tailMinY : cockpitMinY;
+        double maxY = tailMaxY > cockpitMaxY ? tailMaxY : cockpitMaxY;
+
+        boolean obstacleHit;
+        for(Obstacle obstacle: obstacles){
+            Bounds obstacleBounds = obstacle.localToScene(obstacle.getBoundsInLocal());
+
+            double obstacleMinX = obstacleBounds.getMinX();
+            double obstacleMaxX = obstacleBounds.getMaxX();
+            double obstacleMinY = obstacleBounds.getMinY();
+            double obstacleMaxY = obstacleBounds.getMaxY();
+
+            obstacleHit = (minY < obstacleMaxY && minY > obstacleMinY && minX < obstacleMinX && maxX > obstacleMaxX)
+                    || ( maxY > obstacleMinY && maxY < obstacleMaxY && minX > obstacleMinX && maxX < obstacleMaxX) ||
+                    (maxX > obstacleMinX && maxX < obstacleMaxY && minY > obstacleMinY && maxX < obstacleMaxX);
+        }
+
 
         return cockpitWallHit || tailWallHit;
     }
 
-    Translate getPosition(){
-        return position;
-    }
 
-    public void rotate(double dAngle, double left, double right, double up, double down) {
+    public void rotate(double dAngle, double left, double right, double up, double down, Obstacle[] obstacles) {
         if (!this.parked) {
             double oldAngle = this.rotate.getAngle();
             double newAngle = oldAngle + dAngle;
             this.rotate.setAngle(newAngle);
-            if (this.isWallHit(left, right, up, down)) {
+            if (this.isWallOrObstaclesHit(left, right, up, down, obstacles)) {
                 this.rotate.setAngle(oldAngle);
             } else {
                 double magnitude = this.direction.magnitude();
@@ -177,9 +187,6 @@ public class Helicopter extends Group {
         return this.maxSpeed;
     }
 
-    public boolean isThereNoFuel() {
-        return this.noFuel;
-    }
 
     public void setNoFuel(boolean fuel) {
         this.noFuel = fuel;
@@ -236,11 +243,7 @@ public class Helicopter extends Group {
 
 
 
-    public boolean isParked() {
-        return this.parked;
-    }
-
-    public void update(double ds, double speedDamp, double left, double right, double up, double down) {
+    public void update(double ds, double speedDamp, double left, double right, double up, double down, Obstacle[] obstacles) {
         if(elisRotate){
             double odlAngle = this.elisRotation.getAngle();
             this.elisRotation.setAngle(odlAngle + ds * this.ugaonaBrzina);
@@ -258,7 +261,7 @@ public class Helicopter extends Group {
 
             this.position.setX(newX);
             this.position.setY(newY);
-            if (this.isWallHit(left, right, up, down)) {
+            if (this.isWallOrObstaclesHit(left, right, up, down, obstacles)) {
                 this.speed = 0.0;
                 this.position.setX(oldX);
                 this.position.setY(oldY);
