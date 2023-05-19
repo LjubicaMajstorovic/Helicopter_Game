@@ -18,6 +18,8 @@ import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 
+
+
 public class Helicopter extends Group {
     private Point2D direction;
     private Rotate rotate;
@@ -29,6 +31,8 @@ public class Helicopter extends Group {
     private Rectangle horizontalPartOfTail;
     private Group tailGroup;
     private Circle boundCircle;
+
+    private Circle boundCircleObstacle;
     private Rectangle[] elis;
     private Group elisGroup;
     private Rotate elisRotation;
@@ -67,7 +71,10 @@ public class Helicopter extends Group {
         this.tailGroup = new Group();
         this.tailGroup.getChildren().addAll(this.tail, this.horizontalPartOfTail);
         double elisHeight = 1.32 * width;
-        this.boundCircle = new Circle(elisHeight*1.55);
+        this.boundCircle = new Circle(elisHeight*1.3);
+        this.boundCircleObstacle = new Circle(elisHeight*1.17);
+        this.boundCircleObstacle.setFill(Color.TRANSPARENT);
+        this.boundCircleObstacle.setStroke(null);
         this.boundCircle.setFill(null);
         this.boundCircle.setStroke(null);
         this.elis = new Rectangle[3];
@@ -92,7 +99,7 @@ public class Helicopter extends Group {
             elisGroup.getChildren().addAll(this.elis[i]);
         }
 
-        this.helicopterBody.getChildren().addAll(this.tailGroup, this.cockpit, this.boundCircle);
+        this.helicopterBody.getChildren().addAll(this.tailGroup, this.cockpit, this.boundCircle, this.boundCircleObstacle);
         this.rotate = new Rotate(0.0);
         this.scaleHelicopter = new Scale();
         this.helicopterBody.getTransforms().addAll(rotate, scaleHelicopter);
@@ -124,23 +131,12 @@ public class Helicopter extends Group {
 
         boolean tailWallHit = tailMinX <= left || tailMaxX >= right || tailMinY <= up || tailMaxY >= down;
 
-        double minX = tailMinX < cockpitMinX ? tailMinX : cockpitMinX;
-        double maxX = tailMaxX > cockpitMaxX ? tailMaxX : cockpitMaxX;
-        double minY = tailMinY > cockpitMinY ? tailMinY : cockpitMinY;
-        double maxY = tailMaxY > cockpitMaxY ? tailMaxY : cockpitMaxY;
+        boolean obstacleCollision;
 
-        boolean obstacleHit;
+
         for(Obstacle obstacle: obstacles){
-            Bounds obstacleBounds = obstacle.localToScene(obstacle.getBoundsInLocal());
-
-            double obstacleMinX = obstacleBounds.getMinX();
-            double obstacleMaxX = obstacleBounds.getMaxX();
-            double obstacleMinY = obstacleBounds.getMinY();
-            double obstacleMaxY = obstacleBounds.getMaxY();
-
-            obstacleHit = (minY < obstacleMaxY && minY > obstacleMinY && minX < obstacleMinX && maxX > obstacleMaxX)
-                    || ( maxY > obstacleMinY && maxY < obstacleMaxY && minX > obstacleMinX && maxX < obstacleMaxX) ||
-                    (maxX > obstacleMinX && maxX < obstacleMaxY && minY > obstacleMinY && maxX < obstacleMaxX);
+            obstacleCollision = obstacle.handleCollision(this.getBoundsInParent());
+            if(obstacleCollision) return true;
         }
 
 
@@ -195,14 +191,15 @@ public class Helicopter extends Group {
     public void setParked() {
         double oldScale;
         double newScale;
-        this.parked = !this.parked;
-        if (parked){
+        this.elisRotate = true;
+
+        if (!parked){
             oldScale = 1.33;
             newScale = 1;
             this.speed = 0;
+            this.elisRotate = true;
         }
         else{
-            this.elisRotate = true;
             oldScale = 1;
             newScale = 1.33;
         }
@@ -220,7 +217,7 @@ public class Helicopter extends Group {
                 ),
 
                 new KeyFrame(
-                        Duration.seconds(1),
+                        Duration.seconds(2),
                         new KeyValue(scaleHelicopter.xProperty(), newScale),
                         new KeyValue(scaleHelicopter.yProperty(), newScale),
                         new KeyValue(scaleElis[0].xProperty(), newScale),
@@ -233,12 +230,19 @@ public class Helicopter extends Group {
         );
         timeline.play();
         timeline.setOnFinished(event->{
+            this.parked = !this.parked;
+
             if(parked) {
                 this.elisRotate = !elisRotate;
             }
+
         });
 
 
+    }
+
+    public boolean getParked(){
+        return parked;
     }
 
 

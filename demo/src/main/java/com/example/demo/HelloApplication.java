@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
@@ -29,9 +30,12 @@ public class HelloApplication extends Application {
     private static final double SPEEDMETER_HEIGHT = 675.0;
     private static final double FUELMETER_WIDTH = 75.0;
     private static final double FUELMETER_HEIGHT = 75.0;
+    private static final double HEIGHTMETER_HEIGHT = 540;
 
     private static final double OBSTACLE_WIDTH = 110;
     private static final double OBSTACLE_HEIGHT = 8;
+
+    private boolean parking;
 
 
     public HelloApplication() {
@@ -69,6 +73,11 @@ public class HelloApplication extends Application {
         FuelMeter fuelMeter = new FuelMeter(75.0, helicopter);
         fuelMeter.getTransforms().addAll(new Translate(-332.4375, -332.4375));
 
+        HeightMeter heightMeter = new HeightMeter();
+        heightMeter.getTransforms().addAll(new Translate(-(WINDOW_WIDTH/2)*0.99, (WINDOW_HEIGHT/2)*0.8),
+                new Rotate(180));
+
+
         Label label = new Label("00:00");
         label.setStyle("-fx-text-fill: red; -fx-font-size: 20px;");
 
@@ -76,12 +85,14 @@ public class HelloApplication extends Application {
         label.getTransforms().addAll(new Translate(-WINDOW_WIDTH/2.1, WINDOW_HEIGHT/2.19));
         Timer clock = new Timer(label);
         clock.start();
-        root.getChildren().addAll(helipad, speedMeter, fuelMeter, helicopter);
+        root.getChildren().addAll(helipad, speedMeter, fuelMeter, heightMeter, helicopter);
         root.getChildren().addAll(packages);
         root.getChildren().addAll(obstacles);
         root.getTransforms().addAll(new Translate(375.0, 375.0));
 
         Scene scene = new Scene(root, 750.0, 750.0);
+
+        parking = false;
 
 
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
@@ -96,6 +107,9 @@ public class HelloApplication extends Application {
                 helicopter.rotate(5.0, 0.0, 750.0, 0.0, 750.0, obstacles);
             } else if (event.getCode().equals(KeyCode.SPACE)) {
                 helicopter.setParked();
+                heightMeter.updateHeight();
+
+
             }
 
         });

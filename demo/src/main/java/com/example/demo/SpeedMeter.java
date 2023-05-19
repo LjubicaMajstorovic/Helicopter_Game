@@ -24,11 +24,11 @@ public class SpeedMeter extends Group {
         this.rectangle.setFill((Paint)null);
         this.rectangle.setStroke(Color.BLACK);
         this.circle.setFill(Color.RED);
-        this.circle.getTransforms().addAll(new Transform[]{new Translate(width / 2.0, height / 2.0)});
+        this.circle.getTransforms().addAll(new Translate(width / 2.0, height / 2.0));
         this.positionCircle = new Translate();
-        this.circle.getTransforms().addAll(new Transform[]{this.positionCircle});
-        super.getChildren().addAll(new Node[]{this.rectangle, this.circle});
-        super.getTransforms().addAll(new Transform[]{new Translate(0.0, -height / 2.0)});
+        this.circle.getTransforms().addAll(this.positionCircle);
+        super.getChildren().addAll(this.rectangle, this.circle);
+        super.getTransforms().addAll( new Translate(0.0, -height / 2.0));
     }
 
     public void changeSpeed(double curSpeed) {
