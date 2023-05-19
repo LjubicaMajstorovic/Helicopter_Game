@@ -92,7 +92,7 @@ public class HelloApplication extends Application {
 
         Scene scene = new Scene(root, 750.0, 750.0);
 
-        parking = false;
+
 
 
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
@@ -106,8 +106,12 @@ public class HelloApplication extends Application {
             } else if (event.getCode().equals(KeyCode.RIGHT)) {
                 helicopter.rotate(5.0, 0.0, 750.0, 0.0, 750.0, obstacles);
             } else if (event.getCode().equals(KeyCode.SPACE)) {
-                helicopter.setParked();
-                heightMeter.updateHeight();
+                if(!helicopter.isParkingRunning()){
+                    helicopter.setParkingRunning(true);
+                    heightMeter.updateHeight();
+                    helicopter.setParked();
+                }
+
 
 
             }

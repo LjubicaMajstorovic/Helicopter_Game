@@ -44,6 +44,8 @@ public class Helicopter extends Group {
     private Scale scaleHelicopter;
     private Scale[] scaleElis;
 
+    private boolean parkingRunning = false;
+
 
     public Helicopter(double width, double height) {
         this.scaleHelicopter = new Scale();
@@ -110,6 +112,14 @@ public class Helicopter extends Group {
         this.position = new Translate();
         super.getTransforms().addAll(this.position);
 
+    }
+
+    public boolean isParkingRunning(){
+        return parkingRunning;
+    }
+
+    public void setParkingRunning(boolean running){
+        parkingRunning = running;
     }
 
     private boolean isWallOrObstaclesHit(double left, double right, double up, double down, Obstacle[] obstacles) {
@@ -231,6 +241,7 @@ public class Helicopter extends Group {
         timeline.play();
         timeline.setOnFinished(event->{
             this.parked = !this.parked;
+            parkingRunning = false;
 
             if(parked) {
                 this.elisRotate = !elisRotate;
