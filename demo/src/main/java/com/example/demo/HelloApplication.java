@@ -43,10 +43,11 @@ public class HelloApplication extends Application {
 
     public void start(Stage stage) {
         Group root = new Group();
-        Helicopter helicopter = new Helicopter(16.875, 39.37500000000001);
 
         Helipad helipad = new Helipad(75.0, 75.0);
         helipad.getTransforms().addAll(new Translate(-37.5, -37.5));
+
+        Helicopter helicopter = new Helicopter(16.875, 39.37500000000001, helipad);
 
         Translate package0position = new Translate(242.5, -257.5);
         Translate package1position = new Translate(-257.5, -257.5);
@@ -110,6 +111,7 @@ public class HelloApplication extends Application {
                     helicopter.setParkingRunning(true);
                     heightMeter.updateHeight();
                     helicopter.setParked();
+
                 }
 
 
@@ -130,7 +132,7 @@ public class HelloApplication extends Application {
 
 
             speedMeter.changeSpeed(helicopter.getSpeed());
-            fuelMeter.takeFuel(helicopter.getSpeed());
+            fuelMeter.updateFuel(helicopter.getSpeed());
         };
         MyTimer myTimer = new MyTimer(helicopterWrapper);
         myTimer.start();

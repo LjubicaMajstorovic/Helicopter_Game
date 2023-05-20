@@ -45,9 +45,13 @@ public class Helicopter extends Group {
     private Scale[] scaleElis;
 
     private boolean parkingRunning = false;
+    private boolean parkedOnHelipad = false;
+
+    private Helipad helipad;
 
 
-    public Helicopter(double width, double height) {
+    public Helicopter(double width, double height, Helipad  helipad) {
+        this.helipad = helipad;
         this.scaleHelicopter = new Scale();
         super.getTransforms().addAll(this.scaleHelicopter);
         this.parked = true;
@@ -208,10 +212,12 @@ public class Helicopter extends Group {
             newScale = 1;
             this.speed = 0;
             this.elisRotate = true;
+
         }
         else{
             oldScale = 1;
             newScale = 1.33;
+            this.parkedOnHelipad = false;
         }
         Timeline timeline = new Timeline(
                 new KeyFrame(
@@ -245,6 +251,11 @@ public class Helicopter extends Group {
 
             if(parked) {
                 this.elisRotate = !elisRotate;
+                if(helipad.helicopterParked(this.getBoundsInParent())){
+                    parkedOnHelipad = true;
+                }
+            } else{
+                parkedOnHelipad = false;
             }
 
         });
@@ -252,7 +263,7 @@ public class Helicopter extends Group {
 
     }
 
-    public boolean getParked(){
+    public boolean isParked(){
         return parked;
     }
 
@@ -287,6 +298,14 @@ public class Helicopter extends Group {
 
         }
     }
+    public void setHelicopterParkedOnHelipad(boolean isIt){
+        parkedOnHelipad = isIt&&parked;
+    }
+
+    public boolean isHelicopterParkedOnHelipad(){
+        return parkedOnHelipad;
+    }
+
 
 
 }

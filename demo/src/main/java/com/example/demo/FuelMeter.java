@@ -15,8 +15,9 @@ public class FuelMeter extends Group {
     private Line pointer;
     private Rotate pointerRotate;
     private double fuelInTank;
-    private double maxFuel = 500.0;
-    private static double decrement = 0.001;
+    private static final double maxFuel = 500.0;
+    private static final double decrement = 0.001;
+    private static final double increment = 0.3;
     Helicopter helicopter;
 
     public FuelMeter(double width, Helicopter helicopter) {
@@ -37,12 +38,18 @@ public class FuelMeter extends Group {
         super.getChildren().addAll(new Node[]{this.fuelMeter, this.criticalSection, this.pointer});
     }
 
-    public void takeFuel(double speed) {
-        this.fuelInTank = Math.max(this.fuelInTank - Math.abs(speed) * decrement, 0.0);
-        this.pointerRotate.setAngle(-(this.maxFuel - this.fuelInTank) / this.maxFuel * 180.0);
-        if (this.fuelInTank == 0.0) {
-            this.helicopter.setNoFuel(true);
-            this.helicopter.changeSpeed(-this.helicopter.getSpeed());
+    public void updateFuel(double speed) {
+        if(speed > 0){
+            this.fuelInTank = Math.max(this.fuelInTank - Math.abs(speed) * decrement, 0.0);
+            this.pointerRotate.setAngle(-(this.maxFuel - this.fuelInTank) / this.maxFuel * 180.0);
+            if (this.fuelInTank == 0.0) {
+                this.helicopter.setNoFuel(true);
+                this.helicopter.changeSpeed(-this.helicopter.getSpeed());
+            }
+        }
+        if(helicopter.isHelicopterParkedOnHelipad()){
+            this.fuelInTank =Math.min(this.fuelInTank + increment, this.maxFuel);
+            this.pointerRotate.setAngle(-(this.maxFuel - this.fuelInTank)/this.maxFuel*180);
         }
 
     }

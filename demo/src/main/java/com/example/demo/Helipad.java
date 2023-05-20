@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -34,6 +35,9 @@ public class Helipad extends Group {
         finalPad = Shape.subtract(finalPad, this.diagonal1);
         finalPad = Shape.subtract(finalPad, this.diagonal2);
         finalPad.setFill(Color.GREY);
-        super.getChildren().addAll(new Node[]{this.whitePad, finalPad});
+        super.getChildren().addAll(this.whitePad, finalPad);
+    }
+    public boolean helicopterParked(Bounds helicopterBounds) {
+        return super.getBoundsInParent().intersects(helicopterBounds);
     }
 }
