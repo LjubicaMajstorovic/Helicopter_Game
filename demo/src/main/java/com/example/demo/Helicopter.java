@@ -47,32 +47,32 @@ public class Helicopter extends Group {
     private boolean parkingRunning = false;
     private boolean parkedOnHelipad = false;
 
-    private Helipad helipad;
 
 
-    public Helicopter(double width, double height, Helipad  helipad) {
-        this.helipad = helipad;
+
+    public Helicopter(double width, double height, Color color1, Color color2, double maxSpeed) {
         this.scaleHelicopter = new Scale();
         super.getTransforms().addAll(this.scaleHelicopter);
         this.parked = true;
+        this.maxSpeed = maxSpeed;
         this.elisRotate = false;
         this.noFuel = false;
         this.helicopterBody = new Group();
         this.ugaonaBrzina = 343.77467707849394;
         this.speed = 0.0;
         this.cockpit = new Ellipse(width / 2.0, 1.3 * width / 2.0);
-        Stop[] stops = new Stop[]{new Stop(0.0, Color.DARKORANGE), new Stop(1.0, Color.BLUE)};
+        Stop[] stops = new Stop[]{new Stop(0.0, color1), new Stop(1.0, color2)};
         LinearGradient linearGradient = new LinearGradient(1.0, 0.0, 1.0, 1.0, true, CycleMethod.NO_CYCLE, stops);
         this.cockpit.setFill(linearGradient);
         this.cockpit.setStroke(linearGradient);
         double tailWidth = 0.15 * width;
         double tailHeight = height - width / 2.0;
         this.tail = new Rectangle(tailWidth, tailHeight);
-        this.tail.setFill(Color.BLUE);
-        this.tail.setStroke(Color.BLUE);
+        this.tail.setFill(color2);
+        this.tail.setStroke(color2);
         this.tail.getTransforms().addAll(new Translate(-tailWidth / 2.0, 0.0));
         this.horizontalPartOfTail = new Rectangle(3.0 * width / 4.0, 1.5 * tailWidth);
-        this.horizontalPartOfTail.setFill(Color.BLUE);
+        this.horizontalPartOfTail.setFill(color2);
         this.horizontalPartOfTail.getTransforms().addAll(new Translate(-3.0 * width / 8.0, 10.0 * height / 18.0));
         this.tailGroup = new Group();
         this.tailGroup.getChildren().addAll(this.tail, this.horizontalPartOfTail);
@@ -251,9 +251,10 @@ public class Helicopter extends Group {
 
             if(parked) {
                 this.elisRotate = !elisRotate;
-                if(helipad.helicopterParked(this.getBoundsInParent())){
+                //RESITI OVO OVDE
+                /*if(helipad.helicopterParked(this.getBoundsInParent())){
                     parkedOnHelipad = true;
-                }
+                }*/
             } else{
                 parkedOnHelipad = false;
             }

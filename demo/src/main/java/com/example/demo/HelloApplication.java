@@ -1,17 +1,24 @@
 package com.example.demo;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
+import javafx.event.ActionEvent;
 
 public class HelloApplication extends Application {
     private static int a = 1;
@@ -35,7 +42,12 @@ public class HelloApplication extends Application {
     private static final double OBSTACLE_WIDTH = 110;
     private static final double OBSTACLE_HEIGHT = 8;
 
+    private boolean isHelicopterPicked = false;
+    private boolean isFieldPicked = false;
+
     private boolean parking;
+     private Helicopter helicopter = null;
+     private HeightMeter heightMeter = null;
 
 
     public HelloApplication() {
@@ -43,11 +55,97 @@ public class HelloApplication extends Application {
 
     public void start(Stage stage) {
         Group root = new Group();
+        Helicopter helicopter1 = new Helicopter(HELICOPTER_WIDTH, HELICOPTER_HEIGHT, Color.DARKORANGE, Color.BLUE, 300.0);
+        Helicopter helicopter2 = new Helicopter(HELICOPTER_WIDTH, HELICOPTER_HEIGHT, Color.DARKGRAY, Color.WHITE, 350.0);
+        Helicopter helicopter3 = new Helicopter(HELICOPTER_WIDTH, HELICOPTER_HEIGHT, Color.YELLOWGREEN, Color.GREEN, 250.0);
+
+        helicopter2.getTransforms().addAll(
+                new Translate(WINDOW_WIDTH/4, 0)
+        );
+        helicopter3.getTransforms().addAll(
+                new Translate(-WINDOW_WIDTH/4, 0)
+        );
+        Text text1 = new Text("300");
+        Text text2 = new Text("350");
+        Text text3 = new Text("250");
+
+        text1.getTransforms().addAll(new Translate(-WINDOW_WIDTH*0.02, WINDOW_HEIGHT*0.1));
+        text2.getTransforms().addAll(
+                new Translate(WINDOW_WIDTH/4.3, WINDOW_HEIGHT*0.1)
+        );
+        text3.getTransforms().addAll(
+                new Translate(-WINDOW_WIDTH/3.7, WINDOW_HEIGHT*0.1)
+        );
+
+        Font font = Font.font("Arial", FontWeight.BOLD, 18);
+
+        text1.setFont(font);
+        text2.setFont(font);
+        text3.setFont(font);
+
+        text1.setFill(Color.BLACK);
+        text2.setFill(Color.BLACK);
+        text3.setFill(Color.BLACK);
+
+
+
+
+        root.getChildren().addAll(helicopter1, helicopter2, helicopter3, text1, text2, text3);
+        root.getTransforms().addAll(new Translate(375.0, 375.0));
+        Scene scene = new Scene(root, 750.0, 750.0);
+        Image grass = new Image("C:\\Users\\core I7\\IdeaProjects\\HelikopterSkelet\\src\\main\\java\\com\\example\\helikopterskelet\\grass.jpg");
+        ImagePattern background = new ImagePattern(grass, 0.0, 0.0, 1.0, 1.0, true);
+        scene.setFill(background);
+        stage.setTitle("Helicopter");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+        Group newRoot = new Group();
+        newRoot.getTransforms().addAll(new Translate(375.0, 375.0));
+        helicopter1.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isHelicopterPicked){
+                    isHelicopterPicked = true;
+                    helicopter = helicopter1;
+                    newRoot.getChildren().addAll(helicopter);
+                    scene.setRoot(newRoot);
+                }
+            }
+        });
+
+        helicopter2.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isHelicopterPicked){
+                    isHelicopterPicked = true;
+                    helicopter = helicopter2;
+                    helicopter.getTransforms().addAll(new Translate(-WINDOW_WIDTH/4, 0));
+                    newRoot.getChildren().addAll(helicopter);
+                    scene.setRoot(newRoot);
+                }
+            }
+        });
+
+        helicopter3.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isHelicopterPicked){
+                    isHelicopterPicked = true;
+                    helicopter = helicopter3;
+                    helicopter.getTransforms().addAll(new Translate(WINDOW_WIDTH/4, 0));
+                    newRoot.getChildren().addAll(helicopter);
+                    scene.setRoot(newRoot);
+                }
+            }
+        });
+
+        /*Group root = new Group();
 
         Helipad helipad = new Helipad(75.0, 75.0);
         helipad.getTransforms().addAll(new Translate(-37.5, -37.5));
 
-        Helicopter helicopter = new Helicopter(16.875, 39.37500000000001, helipad);
+        Helicopter helicopter = new Helicopter(16.875, 39.37500000000001, helipad, Color.DARKORANGE, Color.BLUE, 300.00);
 
         Translate package0position = new Translate(242.5, -257.5);
         Translate package1position = new Translate(-257.5, -257.5);
@@ -142,7 +240,7 @@ public class HelloApplication extends Application {
         stage.setTitle("Helicopter");
         stage.setScene(scene);
         stage.setResizable(false);
-        stage.show();
+        stage.show();*/
     }
 
     public static void main(String[] args) {
