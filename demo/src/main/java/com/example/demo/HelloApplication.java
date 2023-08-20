@@ -11,10 +11,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Scale;
 import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
@@ -108,8 +110,7 @@ public class HelloApplication extends Application {
                 if(!isHelicopterPicked){
                     isHelicopterPicked = true;
                     helicopter = helicopter1;
-                    newRoot.getChildren().addAll(helicopter);
-                    scene.setRoot(newRoot);
+                    pickField(scene);
                 }
             }
         });
@@ -121,8 +122,7 @@ public class HelloApplication extends Application {
                     isHelicopterPicked = true;
                     helicopter = helicopter2;
                     helicopter.getTransforms().addAll(new Translate(-WINDOW_WIDTH/4, 0));
-                    newRoot.getChildren().addAll(helicopter);
-                    scene.setRoot(newRoot);
+                    pickField(scene);
                 }
             }
         });
@@ -134,8 +134,7 @@ public class HelloApplication extends Application {
                     isHelicopterPicked = true;
                     helicopter = helicopter3;
                     helicopter.getTransforms().addAll(new Translate(WINDOW_WIDTH/4, 0));
-                    newRoot.getChildren().addAll(helicopter);
-                    scene.setRoot(newRoot);
+                    pickField(scene);
                 }
             }
         });
@@ -211,9 +210,6 @@ public class HelloApplication extends Application {
                     helicopter.setParked();
 
                 }
-
-
-
             }
 
         });
@@ -242,6 +238,186 @@ public class HelloApplication extends Application {
         stage.setResizable(false);
         stage.show();*/
     }
+
+    private void pickField(Scene scene){
+        Group root = new Group();
+        Line line1 = new Line(0, -WINDOW_HEIGHT/2, 0, WINDOW_HEIGHT/2);
+        Line line2 = new Line(WINDOW_WIDTH/2, 0, -WINDOW_WIDTH/2, 0);
+        line1.setStrokeWidth(2);
+        line2.setStrokeWidth(2);
+
+        Group field1 = field1();
+        Group field2 = field2();
+        Group field3 = field3();
+        Group field4 = field4();
+
+        field1.getTransforms().addAll(new Translate(WINDOW_WIDTH/4, WINDOW_HEIGHT/4), new Scale(0.25, 0.25));
+        field2.getTransforms().addAll(new Translate(-WINDOW_WIDTH/4, WINDOW_HEIGHT/4), new Scale(0.25, 0.25));
+        field3.getTransforms().addAll(new Translate(-WINDOW_WIDTH/4, -WINDOW_HEIGHT/4), new Scale(0.25, 0.25));
+        field4.getTransforms().addAll(new Translate(WINDOW_WIDTH/4, -WINDOW_HEIGHT/4), new Scale(0.25, 0.25));
+
+        root.getChildren().addAll(field1, field2, field3, field4, line1, line2);
+        root.getTransforms().addAll(new Translate(375.0, 375.0));
+        scene.setRoot(root);
+    }
+
+    private Group field1(){
+        Group group = new Group();
+        Helipad helipad1 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT);
+        Helipad helipad2 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT);
+
+        helipad1.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2, -HELIPAD_HEIGHT/2));
+        helipad2.getTransforms().addAll(new Translate(WINDOW_WIDTH/2.5, -HELIPAD_HEIGHT/2));
+
+        Translate package0position = new Translate(242.5, -257.5);
+        Translate package1position = new Translate(-257.5, -257.5);
+        Translate package2position = new Translate(242.5, 257.5);
+        Translate package3position = new Translate(-257.5, 257.5);
+        Translate package4positon = new Translate(WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
+        Translate package5position = new Translate(WINDOW_WIDTH/2.3, -WINDOW_HEIGHT/2.3);
+        Translate package6position = new Translate(-WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
+        Translate package7position = new Translate(-WINDOW_WIDTH/2/3, WINDOW_HEIGHT/2.3);
+        Package[] packages = new Package[]{new Package(15.0, 15.0, package0position), new Package(15.0, 15.0, package1position), new Package(15.0, 15.0, package2position), new Package(15.0, 15.0, package3position),
+        new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package4positon), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package5position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package6position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package7position)};
+
+        Translate obstacle0position = new Translate(-OBSTACLE_WIDTH/2, -WINDOW_HEIGHT/4);
+        Translate obstacle1position = new Translate(-WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
+        Translate obstacle2position = new Translate(-OBSTACLE_WIDTH/2, WINDOW_HEIGHT/4);
+        Translate obstacle3position = new Translate(WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
+
+
+        Obstacle[] obstacles = new Obstacle[]{
+                new Obstacle(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, obstacle0position),
+                new Obstacle(OBSTACLE_HEIGHT, OBSTACLE_WIDTH, obstacle1position),
+                new Obstacle(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, obstacle2position),
+                new Obstacle(OBSTACLE_HEIGHT, OBSTACLE_WIDTH, obstacle3position)
+        };
+
+        group.getChildren().addAll(helipad1, helipad2);
+        group.getChildren().addAll(packages);
+        group.getChildren().addAll(obstacles);
+
+        return group;
+    }
+
+    private Group field2(){
+        Group group = new Group();
+        Helipad helipad1 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT);
+        Helipad helipad2 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT);
+
+        helipad1.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2, -HELIPAD_HEIGHT/2));
+        helipad2.getTransforms().addAll(new Translate(WINDOW_WIDTH/2.5, -HELIPAD_HEIGHT/2));
+
+        Translate package0position = new Translate(242.5, -257.5);
+        Translate package1position = new Translate(-257.5, -257.5);
+        Translate package2position = new Translate(242.5, 257.5);
+        Translate package3position = new Translate(-257.5, 257.5);
+        Translate package4positon = new Translate(WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
+        Translate package5position = new Translate(WINDOW_WIDTH/2.3, -WINDOW_HEIGHT/2.3);
+        Translate package6position = new Translate(-WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
+        Translate package7position = new Translate(-WINDOW_WIDTH/2/3, WINDOW_HEIGHT/2.3);
+        Package[] packages = new Package[]{new Package(15.0, 15.0, package0position), new Package(15.0, 15.0, package1position), new Package(15.0, 15.0, package2position), new Package(15.0, 15.0, package3position),
+                new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package4positon), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package5position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package6position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package7position)};
+
+        Translate obstacle0position = new Translate(-OBSTACLE_WIDTH/2, -WINDOW_HEIGHT/4);
+        Translate obstacle1position = new Translate(-WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
+        Translate obstacle2position = new Translate(-OBSTACLE_WIDTH/2, WINDOW_HEIGHT/4);
+        Translate obstacle3position = new Translate(WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
+
+
+        Obstacle[] obstacles = new Obstacle[]{
+                new Obstacle(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, obstacle0position),
+                new Obstacle(OBSTACLE_HEIGHT, OBSTACLE_WIDTH, obstacle1position),
+                new Obstacle(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, obstacle2position),
+                new Obstacle(OBSTACLE_HEIGHT, OBSTACLE_WIDTH, obstacle3position)
+        };
+
+        group.getChildren().addAll(helipad1, helipad2);
+        group.getChildren().addAll(packages);
+        group.getChildren().addAll(obstacles);
+
+        return group;
+    }
+
+
+    private Group field3(){
+        Group group = new Group();
+        Helipad helipad1 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT);
+        Helipad helipad2 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT);
+
+        helipad1.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2, -HELIPAD_HEIGHT/2));
+        helipad2.getTransforms().addAll(new Translate(WINDOW_WIDTH/2.5, -HELIPAD_HEIGHT/2));
+
+        Translate package0position = new Translate(242.5, -257.5);
+        Translate package1position = new Translate(-257.5, -257.5);
+        Translate package2position = new Translate(242.5, 257.5);
+        Translate package3position = new Translate(-257.5, 257.5);
+        Translate package4positon = new Translate(WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
+        Translate package5position = new Translate(WINDOW_WIDTH/2.3, -WINDOW_HEIGHT/2.3);
+        Translate package6position = new Translate(-WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
+        Translate package7position = new Translate(-WINDOW_WIDTH/2/3, WINDOW_HEIGHT/2.3);
+        Package[] packages = new Package[]{new Package(15.0, 15.0, package0position), new Package(15.0, 15.0, package1position), new Package(15.0, 15.0, package2position), new Package(15.0, 15.0, package3position),
+                new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package4positon), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package5position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package6position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package7position)};
+
+        Translate obstacle0position = new Translate(-OBSTACLE_WIDTH/2, -WINDOW_HEIGHT/4);
+        Translate obstacle1position = new Translate(-WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
+        Translate obstacle2position = new Translate(-OBSTACLE_WIDTH/2, WINDOW_HEIGHT/4);
+        Translate obstacle3position = new Translate(WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
+
+
+        Obstacle[] obstacles = new Obstacle[]{
+                new Obstacle(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, obstacle0position),
+                new Obstacle(OBSTACLE_HEIGHT, OBSTACLE_WIDTH, obstacle1position),
+                new Obstacle(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, obstacle2position),
+                new Obstacle(OBSTACLE_HEIGHT, OBSTACLE_WIDTH, obstacle3position)
+        };
+
+        group.getChildren().addAll(helipad1, helipad2);
+        group.getChildren().addAll(packages);
+        group.getChildren().addAll(obstacles);
+
+        return group;
+    }
+
+    private Group field4(){
+        Group group = new Group();
+        Helipad helipad1 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT);
+        Helipad helipad2 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT);
+
+        helipad1.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2, -HELIPAD_HEIGHT/2));
+        helipad2.getTransforms().addAll(new Translate(WINDOW_WIDTH/2.5, -HELIPAD_HEIGHT/2));
+
+        Translate package0position = new Translate(242.5, -257.5);
+        Translate package1position = new Translate(-257.5, -257.5);
+        Translate package2position = new Translate(242.5, 257.5);
+        Translate package3position = new Translate(-257.5, 257.5);
+        Translate package4positon = new Translate(WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
+        Translate package5position = new Translate(WINDOW_WIDTH/2.3, -WINDOW_HEIGHT/2.3);
+        Translate package6position = new Translate(-WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
+        Translate package7position = new Translate(-WINDOW_WIDTH/2/3, WINDOW_HEIGHT/2.3);
+        Package[] packages = new Package[]{new Package(15.0, 15.0, package0position), new Package(15.0, 15.0, package1position), new Package(15.0, 15.0, package2position), new Package(15.0, 15.0, package3position),
+                new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package4positon), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package5position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package6position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package7position)};
+
+        Translate obstacle0position = new Translate(-OBSTACLE_WIDTH/2, -WINDOW_HEIGHT/4);
+        Translate obstacle1position = new Translate(-WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
+        Translate obstacle2position = new Translate(-OBSTACLE_WIDTH/2, WINDOW_HEIGHT/4);
+        Translate obstacle3position = new Translate(WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
+
+
+        Obstacle[] obstacles = new Obstacle[]{
+                new Obstacle(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, obstacle0position),
+                new Obstacle(OBSTACLE_HEIGHT, OBSTACLE_WIDTH, obstacle1position),
+                new Obstacle(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, obstacle2position),
+                new Obstacle(OBSTACLE_HEIGHT, OBSTACLE_WIDTH, obstacle3position)
+        };
+
+        group.getChildren().addAll(helipad1, helipad2);
+        group.getChildren().addAll(packages);
+        group.getChildren().addAll(obstacles);
+
+        return group;
+    }
+
 
     public static void main(String[] args) {
         launch(new String[0]);
