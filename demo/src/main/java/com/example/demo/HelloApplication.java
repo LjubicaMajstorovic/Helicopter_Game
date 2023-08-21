@@ -273,12 +273,12 @@ public class HelloApplication extends Application {
         Translate package1position = new Translate(-257.5, -257.5);
         Translate package2position = new Translate(242.5, 257.5);
         Translate package3position = new Translate(-257.5, 257.5);
-        Translate package4positon = new Translate(WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
+        Translate package4position = new Translate(WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
         Translate package5position = new Translate(WINDOW_WIDTH/2.3, -WINDOW_HEIGHT/2.3);
         Translate package6position = new Translate(-WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
         Translate package7position = new Translate(-WINDOW_WIDTH/2/3, WINDOW_HEIGHT/2.3);
         Package[] packages = new Package[]{new Package(15.0, 15.0, package0position), new Package(15.0, 15.0, package1position), new Package(15.0, 15.0, package2position), new Package(15.0, 15.0, package3position),
-        new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package4positon), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package5position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package6position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package7position)};
+        new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package4position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package5position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package6position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package7position)};
 
         Translate obstacle0position = new Translate(-OBSTACLE_WIDTH/2, -WINDOW_HEIGHT/4);
         Translate obstacle1position = new Translate(-WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
@@ -306,23 +306,23 @@ public class HelloApplication extends Application {
         Helipad helipad2 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT);
 
         helipad1.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2, -HELIPAD_HEIGHT/2));
-        helipad2.getTransforms().addAll(new Translate(WINDOW_WIDTH/2.5, -HELIPAD_HEIGHT/2));
+        helipad2.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2.5, -WINDOW_HEIGHT/2));
 
         Translate package0position = new Translate(242.5, -257.5);
         Translate package1position = new Translate(-257.5, -257.5);
         Translate package2position = new Translate(242.5, 257.5);
         Translate package3position = new Translate(-257.5, 257.5);
-        Translate package4positon = new Translate(WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
+        Translate package4position = new Translate(WINDOW_WIDTH/2.3, 0);
         Translate package5position = new Translate(WINDOW_WIDTH/2.3, -WINDOW_HEIGHT/2.3);
-        Translate package6position = new Translate(-WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
-        Translate package7position = new Translate(-WINDOW_WIDTH/2/3, WINDOW_HEIGHT/2.3);
+        Translate package6position = new Translate(-WINDOW_WIDTH/2.3, 0);
+        Translate package7position = new Translate(0, WINDOW_HEIGHT/2.1);
         Package[] packages = new Package[]{new Package(15.0, 15.0, package0position), new Package(15.0, 15.0, package1position), new Package(15.0, 15.0, package2position), new Package(15.0, 15.0, package3position),
-                new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package4positon), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package5position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package6position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package7position)};
+                new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package4position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package5position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package6position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package7position)};
 
         Translate obstacle0position = new Translate(-OBSTACLE_WIDTH/2, -WINDOW_HEIGHT/4);
-        Translate obstacle1position = new Translate(-WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
+        Translate obstacle1position = new Translate(-WINDOW_WIDTH/4, -WINDOW_WIDTH/2.5);
         Translate obstacle2position = new Translate(-OBSTACLE_WIDTH/2, WINDOW_HEIGHT/4);
-        Translate obstacle3position = new Translate(WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
+        Translate obstacle3position = new Translate(WINDOW_WIDTH/4, -WINDOW_WIDTH/2.5);
 
 
         Obstacle[] obstacles = new Obstacle[]{
@@ -346,23 +346,23 @@ public class HelloApplication extends Application {
         Helipad helipad2 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT);
 
         helipad1.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2, -HELIPAD_HEIGHT/2));
-        helipad2.getTransforms().addAll(new Translate(WINDOW_WIDTH/2.5, -HELIPAD_HEIGHT/2));
+        helipad2.getTransforms().addAll(new Translate(-WINDOW_WIDTH/3, -WINDOW_HEIGHT/2));
 
         Translate package0position = new Translate(242.5, -257.5);
-        Translate package1position = new Translate(-257.5, -257.5);
+        Translate package1position = new Translate(-WINDOW_WIDTH/2, -257.5);
         Translate package2position = new Translate(242.5, 257.5);
         Translate package3position = new Translate(-257.5, 257.5);
-        Translate package4positon = new Translate(WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
-        Translate package5position = new Translate(WINDOW_WIDTH/2.3, -WINDOW_HEIGHT/2.3);
+        Translate package4position = new Translate(WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
+        Translate package5position = new Translate(WINDOW_WIDTH/2.3, 0);
         Translate package6position = new Translate(-WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
         Translate package7position = new Translate(-WINDOW_WIDTH/2/3, WINDOW_HEIGHT/2.3);
         Package[] packages = new Package[]{new Package(15.0, 15.0, package0position), new Package(15.0, 15.0, package1position), new Package(15.0, 15.0, package2position), new Package(15.0, 15.0, package3position),
-                new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package4positon), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package5position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package6position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package7position)};
+                new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package4position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package5position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package6position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package7position)};
 
-        Translate obstacle0position = new Translate(-OBSTACLE_WIDTH/2, -WINDOW_HEIGHT/4);
-        Translate obstacle1position = new Translate(-WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
-        Translate obstacle2position = new Translate(-OBSTACLE_WIDTH/2, WINDOW_HEIGHT/4);
-        Translate obstacle3position = new Translate(WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
+        Translate obstacle0position = new Translate(-WINDOW_WIDTH/4, -WINDOW_HEIGHT/4);
+        Translate obstacle1position = new Translate(-WINDOW_WIDTH/4, WINDOW_HEIGHT/4);
+        Translate obstacle2position = new Translate(WINDOW_WIDTH/10, WINDOW_HEIGHT/4);
+        Translate obstacle3position = new Translate(WINDOW_WIDTH/4, -OBSTACLE_WIDTH/1.7);
 
 
         Obstacle[] obstacles = new Obstacle[]{
@@ -371,6 +371,8 @@ public class HelloApplication extends Application {
                 new Obstacle(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, obstacle2position),
                 new Obstacle(OBSTACLE_HEIGHT, OBSTACLE_WIDTH, obstacle3position)
         };
+        obstacles[1].getTransforms().addAll(new Rotate(150));
+        obstacles[3].getTransforms().addAll(new Rotate(150));
 
         group.getChildren().addAll(helipad1, helipad2);
         group.getChildren().addAll(packages);
@@ -385,23 +387,23 @@ public class HelloApplication extends Application {
         Helipad helipad2 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT);
 
         helipad1.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2, -HELIPAD_HEIGHT/2));
-        helipad2.getTransforms().addAll(new Translate(WINDOW_WIDTH/2.5, -HELIPAD_HEIGHT/2));
+        helipad2.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2.5, WINDOW_WIDTH/3));
 
         Translate package0position = new Translate(242.5, -257.5);
         Translate package1position = new Translate(-257.5, -257.5);
         Translate package2position = new Translate(242.5, 257.5);
         Translate package3position = new Translate(-257.5, 257.5);
-        Translate package4positon = new Translate(WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
+        Translate package4position = new Translate(0, -WINDOW_HEIGHT/2.3);
         Translate package5position = new Translate(WINDOW_WIDTH/2.3, -WINDOW_HEIGHT/2.3);
         Translate package6position = new Translate(-WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
         Translate package7position = new Translate(-WINDOW_WIDTH/2/3, WINDOW_HEIGHT/2.3);
         Package[] packages = new Package[]{new Package(15.0, 15.0, package0position), new Package(15.0, 15.0, package1position), new Package(15.0, 15.0, package2position), new Package(15.0, 15.0, package3position),
-                new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package4positon), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package5position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package6position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package7position)};
+                new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package4position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package5position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package6position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package7position)};
 
         Translate obstacle0position = new Translate(-OBSTACLE_WIDTH/2, -WINDOW_HEIGHT/4);
-        Translate obstacle1position = new Translate(-WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
+        Translate obstacle1position = new Translate(-WINDOW_WIDTH/4, WINDOW_HEIGHT/4);
         Translate obstacle2position = new Translate(-OBSTACLE_WIDTH/2, WINDOW_HEIGHT/4);
-        Translate obstacle3position = new Translate(WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
+        Translate obstacle3position = new Translate(WINDOW_WIDTH/4, -WINDOW_HEIGHT/4);
 
 
         Obstacle[] obstacles = new Obstacle[]{
