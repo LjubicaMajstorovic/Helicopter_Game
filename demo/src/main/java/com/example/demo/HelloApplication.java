@@ -259,6 +259,57 @@ public class HelloApplication extends Application {
         root.getChildren().addAll(field1, field2, field3, field4, line1, line2);
         root.getTransforms().addAll(new Translate(375.0, 375.0));
         scene.setRoot(root);
+
+
+        Group newRoot = new Group();
+        field1.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isFieldPicked){
+                    Group field = field1();
+                    field.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
+                    newRoot.getChildren().addAll(field);
+                    scene.setRoot(newRoot);
+                }
+            }
+        });
+
+        field2.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isFieldPicked){
+                    Group field = field2();
+                    field.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
+                    newRoot.getChildren().addAll(field);
+                    scene.setRoot(newRoot);
+                }
+            }
+        });
+
+        field3.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isFieldPicked){
+                    Group field = field3();
+                    field.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
+                    newRoot.getChildren().addAll(field);
+                    scene.setRoot(newRoot);
+                }
+            }
+        });
+
+        field4.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(!isFieldPicked){
+                    Group field = field4();
+                    field.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
+                    newRoot.getChildren().addAll(field);
+                    scene.setRoot(newRoot);
+                }
+            }
+        });
+
     }
 
     private Group field1(){
@@ -267,7 +318,7 @@ public class HelloApplication extends Application {
         Helipad helipad2 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT);
 
         helipad1.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2, -HELIPAD_HEIGHT/2));
-        helipad2.getTransforms().addAll(new Translate(WINDOW_WIDTH/2.5, -HELIPAD_HEIGHT/2));
+        helipad2.getTransforms().addAll(new Translate(WINDOW_WIDTH/3, -HELIPAD_HEIGHT/2));
 
         Translate package0position = new Translate(242.5, -257.5);
         Translate package1position = new Translate(-257.5, -257.5);
