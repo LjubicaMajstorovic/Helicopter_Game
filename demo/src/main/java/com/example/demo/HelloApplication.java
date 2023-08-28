@@ -51,6 +51,7 @@ public class HelloApplication extends Application {
      private Helicopter helicopter = null;
      private HeightMeter heightMeter = null;
 
+     private Group root;
 
     public HelloApplication() {
     }
@@ -270,6 +271,8 @@ public class HelloApplication extends Application {
                     field.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
                     newRoot.getChildren().addAll(field);
                     scene.setRoot(newRoot);
+                    playGame(scene);
+
                 }
             }
         });
@@ -282,6 +285,7 @@ public class HelloApplication extends Application {
                     field.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
                     newRoot.getChildren().addAll(field);
                     scene.setRoot(newRoot);
+                    playGame(scene);
                 }
             }
         });
@@ -294,6 +298,7 @@ public class HelloApplication extends Application {
                     field.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
                     newRoot.getChildren().addAll(field);
                     scene.setRoot(newRoot);
+                    playGame(scene);
                 }
             }
         });
@@ -306,6 +311,7 @@ public class HelloApplication extends Application {
                     field.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
                     newRoot.getChildren().addAll(field);
                     scene.setRoot(newRoot);
+                    playGame(scene);
                 }
             }
         });
@@ -471,6 +477,11 @@ public class HelloApplication extends Application {
         return group;
     }
 
+    public void playGame(Scene scene){
+        Group root = (Group) scene.getRoot();
+        this.helicopter.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
+        root.getChildren().addAll(this.helicopter);
+    }
 
     public static void main(String[] args) {
         launch(new String[0]);
