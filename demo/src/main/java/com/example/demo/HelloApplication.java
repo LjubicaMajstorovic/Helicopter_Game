@@ -481,6 +481,25 @@ public class HelloApplication extends Application {
         Group root = (Group) scene.getRoot();
         this.helicopter.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
         root.getChildren().addAll(this.helicopter);
+        SpeedMeter speedMeter = new SpeedMeter(helicopter.getMaxSpeed(), 7.5, 675.0);
+        speedMeter.getTransforms().addAll(new Translate(365.625, 0.0), new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
+
+        FuelMeter fuelMeter = new FuelMeter(75.0, helicopter);
+        fuelMeter.getTransforms().addAll(new Translate(-332.4375, -332.4375), new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
+
+        HeightMeter heightMeter = new HeightMeter();
+        heightMeter.getTransforms().addAll(new Translate(-(WINDOW_WIDTH/2)*0.99, (WINDOW_HEIGHT/2)*0.8),
+                new Rotate(180), new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
+
+
+        Label label = new Label("00:00");
+        label.setStyle("-fx-text-fill: red; -fx-font-size: 20px;");
+
+        root.getChildren().addAll(label);
+        label.getTransforms().addAll(new Translate(-WINDOW_WIDTH/2.1, WINDOW_HEIGHT/2.19), new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
+        Timer clock = new Timer(label);
+        clock.start();
+        root.getChildren().addAll(speedMeter, fuelMeter, heightMeter);
     }
 
     public static void main(String[] args) {
