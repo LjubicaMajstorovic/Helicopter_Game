@@ -357,7 +357,7 @@ public class HelloApplication extends Application {
         Helipad helipad2 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT);
 
         helipad1.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2, -HELIPAD_HEIGHT/2));
-        helipad2.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2.5, -WINDOW_HEIGHT/2));
+        helipad2.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2.5, -WINDOW_HEIGHT/2.5));
 
         Translate package0position = new Translate(242.5, -257.5);
         Translate package1position = new Translate(-257.5, -257.5);
@@ -366,7 +366,7 @@ public class HelloApplication extends Application {
         Translate package4position = new Translate(WINDOW_WIDTH/2.3, 0);
         Translate package5position = new Translate(WINDOW_WIDTH/2.3, -WINDOW_HEIGHT/2.3);
         Translate package6position = new Translate(-WINDOW_WIDTH/2.3, 0);
-        Translate package7position = new Translate(0, WINDOW_HEIGHT/2.1);
+        Translate package7position = new Translate(0, WINDOW_HEIGHT/2.5);
         Package[] packages = new Package[]{new Package(15.0, 15.0, package0position), new Package(15.0, 15.0, package1position), new Package(15.0, 15.0, package2position), new Package(15.0, 15.0, package3position),
                 new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package4position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package5position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package6position), new Package(PACKAGE_WIDTH, PACKAGE_HEIGHT, package7position)};
 
@@ -397,10 +397,10 @@ public class HelloApplication extends Application {
         Helipad helipad2 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT);
 
         helipad1.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2, -HELIPAD_HEIGHT/2));
-        helipad2.getTransforms().addAll(new Translate(-WINDOW_WIDTH/3, -WINDOW_HEIGHT/2));
+        helipad2.getTransforms().addAll(new Translate(-WINDOW_WIDTH/3, -WINDOW_HEIGHT/2.5));
 
         Translate package0position = new Translate(242.5, -257.5);
-        Translate package1position = new Translate(-WINDOW_WIDTH/2, -257.5);
+        Translate package1position = new Translate(-WINDOW_WIDTH/2.3, -257.5);
         Translate package2position = new Translate(242.5, 257.5);
         Translate package3position = new Translate(-257.5, 257.5);
         Translate package4position = new Translate(WINDOW_WIDTH/2.3, WINDOW_HEIGHT/2.3);
