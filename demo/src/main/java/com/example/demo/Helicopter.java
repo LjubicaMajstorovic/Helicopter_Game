@@ -315,7 +315,4 @@ public class Helicopter extends Group {
         this.helipad = helipad;
     }
 
-
-
-
 }

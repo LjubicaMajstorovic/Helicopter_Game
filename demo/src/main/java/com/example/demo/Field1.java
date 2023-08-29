@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import javafx.scene.Group;
+import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 
 public class Field1 extends Group implements Field {
@@ -42,6 +43,15 @@ public class Field1 extends Group implements Field {
         helipad1.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2, -HELIPAD_HEIGHT/2));
         helipad2.getTransforms().addAll(new Translate(WINDOW_WIDTH/3, -HELIPAD_HEIGHT/2));
 
+        Water water1 = new Water();
+        Water water2 = new Water();
+        Water water3 = new Water();
+
+        water1.getTransforms().addAll(new Translate(-WINDOW_WIDTH/2.5, 0));
+        water2.getTransforms().addAll(new Translate(0, -WINDOW_HEIGHT/2.5), new Rotate(90));
+        water3.getTransforms().addAll(new Translate(WINDOW_WIDTH/6, WINDOW_HEIGHT/2.7));
+
+
         Translate package0position = new Translate(242.5, -257.5);
         Translate package1position = new Translate(-257.5, -257.5);
         Translate package2position = new Translate(242.5, 257.5);
@@ -73,6 +83,9 @@ public class Field1 extends Group implements Field {
         }
         super.getChildren().addAll(packages);
         super.getChildren().addAll(obstacles);
+        super.getChildren().addAll(water1);
+        super.getChildren().addAll(water2);
+        super.getChildren().addAll(water3);
 
 
     }
