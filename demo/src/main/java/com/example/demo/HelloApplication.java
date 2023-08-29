@@ -281,6 +281,7 @@ public class HelloApplication extends Application {
                     helipad2 = field.getHelipad2();
                     packages = field.getPackages();
                     obstacles = field.getObstacles();
+                    helicopter.setHelipad(helipad2);
                     playGame(scene);
 
                 }
@@ -299,6 +300,7 @@ public class HelloApplication extends Application {
                     helipad2 = field.getHelipad2();
                     packages = field.getPackages();
                     obstacles = field.getObstacles();
+                    helicopter.setHelipad(helipad2);
                     playGame(scene);
                 }
             }
@@ -316,6 +318,7 @@ public class HelloApplication extends Application {
                     helipad2 = field.getHelipad2();
                     packages = field.getPackages();
                     obstacles = field.getObstacles();
+                    helicopter.setHelipad(helipad2);
                     playGame(scene);
                 }
             }
@@ -333,6 +336,7 @@ public class HelloApplication extends Application {
                     helipad2 = field.getHelipad2();
                     packages = field.getPackages();
                     obstacles = field.getObstacles();
+                    helicopter.setHelipad(helipad2);
                     playGame(scene);
                 }
             }
@@ -343,7 +347,6 @@ public class HelloApplication extends Application {
     public void playGame(Scene scene){
         Group root = (Group) scene.getRoot();
         this.helicopter.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
-        //root.getChildren().addAll(this.helicopter);
         SpeedMeter speedMeter = new SpeedMeter(helicopter.getMaxSpeed(), 7.5, 675.0);
         speedMeter.getTransforms().addAll(new Translate(365.625, 0.0), new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
 

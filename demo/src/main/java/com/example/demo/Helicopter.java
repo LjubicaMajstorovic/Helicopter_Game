@@ -43,7 +43,7 @@ public class Helicopter extends Group {
     private boolean elisRotate;
     private Scale scaleHelicopter;
     private Scale[] scaleElis;
-
+    private Helipad helipad = null;
     private boolean parkingRunning = false;
     private boolean parkedOnHelipad = false;
 
@@ -217,7 +217,11 @@ public class Helicopter extends Group {
         else{
             oldScale = 1;
             newScale = 1.33;
-            this.parkedOnHelipad = false;
+            if(parkedOnHelipad){
+                this.parkedOnHelipad = false;
+                this.helipad.removeFuelTank();
+            }
+
         }
         Timeline timeline = new Timeline(
                 new KeyFrame(
@@ -252,9 +256,9 @@ public class Helicopter extends Group {
             if(parked) {
                 this.elisRotate = !elisRotate;
                 //RESITI OVO OVDE
-                /*if(helipad.helicopterParked(this.getBoundsInParent())){
+                if(helipad.helicopterParked(this.getBoundsInParent())){
                     parkedOnHelipad = true;
-                }*/
+                }
             } else{
                 parkedOnHelipad = false;
             }
@@ -306,6 +310,11 @@ public class Helicopter extends Group {
     public boolean isHelicopterParkedOnHelipad(){
         return parkedOnHelipad;
     }
+
+    public void setHelipad(Helipad helipad){
+        this.helipad = helipad;
+    }
+
 
 
 

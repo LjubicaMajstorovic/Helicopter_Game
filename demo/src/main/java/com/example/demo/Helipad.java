@@ -19,9 +19,20 @@ public class Helipad extends Group {
     private Line diagonal2;
     private Rectangle whitePad;
 
-    public Helipad(double width, double height) {
+    private boolean used = false;
+
+
+
+    public Helipad(double width, double height, boolean used) {
+        this.used = used;
         this.pad = new Rectangle(width, height, Color.GREY);
-        this.whitePad = new Rectangle(width, height, Color.WHITE);
+        Color color;
+        if(used){
+            color = Color.WHITE;
+        } else{
+            color = Color.DARKGREEN;
+        }
+        this.whitePad = new Rectangle(width, height, color);
         this.circle = new Circle(width / 2.0);
         this.circle.getTransforms().addAll(new Transform[]{new Translate(width / 2.0, width / 2.0)});
         this.circle.setFill((Paint)null);
@@ -38,6 +49,11 @@ public class Helipad extends Group {
         super.getChildren().addAll(this.whitePad, finalPad);
     }
     public boolean helicopterParked(Bounds helicopterBounds) {
-        return super.getBoundsInParent().intersects(helicopterBounds);
+        return (super.getBoundsInParent().intersects(helicopterBounds) && !used);
+    }
+
+    public void removeFuelTank() {
+        used = true;
+        whitePad.setFill(Color.WHITE);
     }
 }

@@ -36,8 +36,8 @@ public class Field1 extends Group implements Field {
     }
 
     public Field1(Helicopter helicopter){
-        helipad1 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT);
-        helipad2 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT);
+        helipad1 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT, true);
+        helipad2 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT, false);
 
         helipad1.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2, -HELIPAD_HEIGHT/2));
         helipad2.getTransforms().addAll(new Translate(WINDOW_WIDTH/3, -HELIPAD_HEIGHT/2));
