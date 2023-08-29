@@ -37,7 +37,7 @@ public class Field3 extends Group implements Field{
         return packages;
     }
 
-    public Field3(){
+    public Field3(Helicopter helicopter){
         helipad1 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT);
         helipad2 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT);
 
@@ -71,6 +71,10 @@ public class Field3 extends Group implements Field{
         obstacles[3].getTransforms().addAll(new Rotate(150));
 
         super.getChildren().addAll(helipad1, helipad2);
+        if(helicopter != null){
+            helicopter.getTransforms().addAll(new Translate(-WINDOW_WIDTH/2, -WINDOW_HEIGHT/2));
+            super.getChildren().addAll(helicopter);
+        }
         super.getChildren().addAll(packages);
         super.getChildren().addAll(obstacles);
 

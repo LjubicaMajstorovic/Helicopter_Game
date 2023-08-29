@@ -3,6 +3,8 @@ package com.example.demo;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -50,6 +52,11 @@ public class HelloApplication extends Application {
     private boolean parking;
      private Helicopter helicopter = null;
      private HeightMeter heightMeter = null;
+
+     private Helipad helipad1 = null;
+     private Helipad helipad2 = null;
+     private Package[] packages = null;
+     private Obstacle[] obstacles = null;
 
      private Group root;
 
@@ -247,10 +254,10 @@ public class HelloApplication extends Application {
         line1.setStrokeWidth(2);
         line2.setStrokeWidth(2);
 
-        Field1 field1 = new Field1();
-        Field2 field2 = new Field2();
-        Field3 field3 = new Field3();
-        Field4 field4 = new Field4();
+        Field1 field1 = new Field1(null);
+        Field2 field2 = new Field2(null);
+        Field3 field3 = new Field3(null);
+        Field4 field4 = new Field4(null);
 
         field1.getTransforms().addAll(new Translate(WINDOW_WIDTH/4, WINDOW_HEIGHT/4), new Scale(0.25, 0.25));
         field2.getTransforms().addAll(new Translate(-WINDOW_WIDTH/4, WINDOW_HEIGHT/4), new Scale(0.25, 0.25));
@@ -261,16 +268,19 @@ public class HelloApplication extends Application {
         root.getTransforms().addAll(new Translate(375.0, 375.0));
         scene.setRoot(root);
 
-
         Group newRoot = new Group();
         field1.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if(!isFieldPicked){
-                    Field1 field = new Field1();
+                    Field1 field = new Field1(helicopter);
                     field.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
                     newRoot.getChildren().addAll(field);
                     scene.setRoot(newRoot);
+                    helipad1 = field.getHelipad1();
+                    helipad2 = field.getHelipad2();
+                    packages = field.getPackages();
+                    obstacles = field.getObstacles();
                     playGame(scene);
 
                 }
@@ -281,10 +291,14 @@ public class HelloApplication extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if(!isFieldPicked){
-                    Field2 field = new Field2();
+                    Field2 field = new Field2(helicopter);
                     field.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
                     newRoot.getChildren().addAll(field);
                     scene.setRoot(newRoot);
+                    helipad1 = field.getHelipad1();
+                    helipad2 = field.getHelipad2();
+                    packages = field.getPackages();
+                    obstacles = field.getObstacles();
                     playGame(scene);
                 }
             }
@@ -294,10 +308,14 @@ public class HelloApplication extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if(!isFieldPicked){
-                    Field3 field = new Field3();
+                    Field3 field = new Field3(helicopter);
                     field.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
                     newRoot.getChildren().addAll(field);
                     scene.setRoot(newRoot);
+                    helipad1 = field.getHelipad1();
+                    helipad2 = field.getHelipad2();
+                    packages = field.getPackages();
+                    obstacles = field.getObstacles();
                     playGame(scene);
                 }
             }
@@ -307,21 +325,25 @@ public class HelloApplication extends Application {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if(!isFieldPicked){
-                    Field4 field = new Field4();
+                    Field4 field = new Field4(helicopter);
                     field.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
                     newRoot.getChildren().addAll(field);
                     scene.setRoot(newRoot);
+                    helipad1 = field.getHelipad1();
+                    helipad2 = field.getHelipad2();
+                    packages = field.getPackages();
+                    obstacles = field.getObstacles();
                     playGame(scene);
                 }
             }
         });
 
     }
-    
+
     public void playGame(Scene scene){
         Group root = (Group) scene.getRoot();
         this.helicopter.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
-        root.getChildren().addAll(this.helicopter);
+        //root.getChildren().addAll(this.helicopter);
         SpeedMeter speedMeter = new SpeedMeter(helicopter.getMaxSpeed(), 7.5, 675.0);
         speedMeter.getTransforms().addAll(new Translate(365.625, 0.0), new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
 
@@ -341,6 +363,46 @@ public class HelloApplication extends Application {
         Timer clock = new Timer(label);
         clock.start();
         root.getChildren().addAll(speedMeter, fuelMeter, heightMeter);
+
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
+            if (event.getCode().equals(KeyCode.UP)) {
+                helicopter.changeSpeed(5.0);
+            } else if (event.getCode().equals(KeyCode.DOWN)) {
+                helicopter.changeSpeed(-5.0);
+            } else if (event.getCode().equals(KeyCode.LEFT)) {
+                helicopter.rotate(-5.0, 0.0, 750.0, 0.0, 750.0, obstacles);
+
+            } else if (event.getCode().equals(KeyCode.RIGHT)) {
+                helicopter.rotate(5.0, 0.0, 750.0, 0.0, 750.0, obstacles);
+            } else if (event.getCode().equals(KeyCode.SPACE)) {
+                if(!helicopter.isParkingRunning()){
+                    helicopter.setParkingRunning(true);
+                    heightMeter.updateHeight();
+                    helicopter.setParked();
+
+                }
+            }
+
+        });
+        MyTimer.IUpdatable helicopterWrapper = (ds) -> {
+            helicopter.update(ds,  0.995, 0.0, 750.0, 0.0, 750.0, obstacles);
+            for(int i = 0; i < packages.length; ++i) {
+                if (packages[i] != null && packages[i].handleCollision(helicopter.getBoundsInParent())) {
+                    for (Node node : root.getChildren()) {
+                        if (node instanceof Field) {
+                            ((Group) node).getChildren().remove(packages[i]); // Call interface methods
+                        }
+                    }
+                    packages[i] = null;
+                }
+            }
+
+
+            speedMeter.changeSpeed(helicopter.getSpeed());
+            fuelMeter.updateFuel(helicopter.getSpeed());
+        };
+        MyTimer myTimer = new MyTimer(helicopterWrapper);
+        myTimer.start();
     }
 
     public static void main(String[] args) {
