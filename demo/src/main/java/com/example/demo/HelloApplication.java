@@ -1,9 +1,6 @@
 package com.example.demo;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.KeyFrame;
-import javafx.animation.ScaleTransition;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -411,29 +408,19 @@ public class HelloApplication extends Application {
                 if(waters[i].isHelicopterAboveWater(helicopter) && helicopter.getSpeed() < 0.5){
                     isGameFinished = true;
 
-                    Duration duration = Duration.seconds(1);
 
-                    KeyFrame keyFrame1 = new KeyFrame(duration,
-                            event -> {
-                                // Apply scaling and fading
-                                helicopter.setScaleX(0.5);
-                                helicopter.setScaleY(0.5);
-                                helicopter.setOpacity(0.5);
-                            }
+                    Timeline timeline = new Timeline(
+                            new KeyFrame(Duration.ZERO,
+                                    new KeyValue(helicopter.scaleXProperty(), 1, Interpolator.LINEAR),
+                                    new KeyValue(helicopter.scaleYProperty(), 1, Interpolator.LINEAR),
+                                    new KeyValue(helicopter.opacityProperty(), 1, Interpolator.LINEAR)),
+                            new KeyFrame(Duration.seconds(2),
+                                    new KeyValue(helicopter.scaleXProperty(), 0, Interpolator.LINEAR),
+                                    new KeyValue(helicopter.scaleYProperty(), 0, Interpolator.LINEAR),
+                                    new KeyValue(helicopter.opacityProperty(), 0, Interpolator.LINEAR))
                     );
-
-                    KeyFrame keyFrame2 = new KeyFrame(duration,
-                            event -> {
-                                // Apply scaling and fading
-                                helicopter.setScaleX(0);
-                                helicopter.setScaleY(0);
-                                helicopter.setOpacity(0);
-                            }
-                    );
-
-                    Timeline timeline = new Timeline(keyFrame1, keyFrame2);
                     timeline.play();
-                    
+
                 }
             }
 
