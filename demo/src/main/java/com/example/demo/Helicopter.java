@@ -77,7 +77,7 @@ public class Helicopter extends Group {
         this.tailGroup = new Group();
         this.tailGroup.getChildren().addAll(this.tail, this.horizontalPartOfTail);
         double elisHeight = 1.32 * width;
-        this.boundCircle = new Circle(elisHeight*1.3);
+        this.boundCircle = new Circle(elisHeight);
         this.boundCircleObstacle = new Circle(elisHeight*1.17);
         this.boundCircleObstacle.setFill(Color.TRANSPARENT);
         this.boundCircleObstacle.setStroke(null);

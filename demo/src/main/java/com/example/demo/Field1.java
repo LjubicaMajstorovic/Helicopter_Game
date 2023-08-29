@@ -2,6 +2,7 @@ package com.example.demo;
 
 import javafx.scene.Group;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 
 public class Field1 extends Group implements Field {
@@ -9,6 +10,7 @@ public class Field1 extends Group implements Field {
     private Helipad helipad2;
     private Obstacle[] obstacles;
     private Package[] packages;
+    private Water[] waters;
 
     private static final double HELIPAD_WIDTH = 75.0;
     private static final double HELIPAD_HEIGHT = 75.0;
@@ -36,6 +38,8 @@ public class Field1 extends Group implements Field {
         return packages;
     }
 
+    public Water[] getWaters() { return waters; }
+
     public Field1(Helicopter helicopter){
         helipad1 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT, true);
         helipad2 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT, false);
@@ -43,13 +47,11 @@ public class Field1 extends Group implements Field {
         helipad1.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2, -HELIPAD_HEIGHT/2));
         helipad2.getTransforms().addAll(new Translate(WINDOW_WIDTH/3, -HELIPAD_HEIGHT/2));
 
-        Water water1 = new Water();
-        Water water2 = new Water();
-        Water water3 = new Water();
-
-        water1.getTransforms().addAll(new Translate(-WINDOW_WIDTH/2.5, 0));
-        water2.getTransforms().addAll(new Translate(0, -WINDOW_HEIGHT/2.5), new Rotate(90));
-        water3.getTransforms().addAll(new Translate(WINDOW_WIDTH/6, WINDOW_HEIGHT/2.7));
+        waters = new Water[]{
+                new Water(new Transform[] {new Translate(-WINDOW_WIDTH/2.5, 0)}),
+                new Water(new Transform[]{new Translate(0, -WINDOW_HEIGHT/2.5), new Rotate(90)}),
+                new Water(new Transform[]{new Translate(WINDOW_WIDTH/6, WINDOW_HEIGHT/2.7)})
+        };
 
 
         Translate package0position = new Translate(242.5, -257.5);
@@ -77,15 +79,13 @@ public class Field1 extends Group implements Field {
         };
 
         super.getChildren().addAll(helipad1, helipad2);
+        super.getChildren().addAll(waters);
         if(helicopter != null){
             helicopter.getTransforms().addAll(new Translate(-WINDOW_WIDTH/2, -WINDOW_HEIGHT/2));
             super.getChildren().addAll(helicopter);
         }
         super.getChildren().addAll(packages);
         super.getChildren().addAll(obstacles);
-        super.getChildren().addAll(water1);
-        super.getChildren().addAll(water2);
-        super.getChildren().addAll(water3);
 
 
     }

@@ -1,5 +1,9 @@
 package com.example.demo;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -23,9 +27,10 @@ import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
+import javafx.util.Duration;
 
 public class HelloApplication extends Application {
-    private static int a = 1;
+
     private static final double WINDOW_WIDTH = 750.0;
     private static final double WINDOW_HEIGHT = 750.0;
     private static final double HELICOPTER_WIDTH = 16.875;
@@ -48,8 +53,8 @@ public class HelloApplication extends Application {
 
     private boolean isHelicopterPicked = false;
     private boolean isFieldPicked = false;
-
-    private boolean parking;
+    private boolean isGameFinished = false;
+     private boolean parking;
      private Helicopter helicopter = null;
      private HeightMeter heightMeter = null;
 
@@ -57,8 +62,7 @@ public class HelloApplication extends Application {
      private Helipad helipad2 = null;
      private Package[] packages = null;
      private Obstacle[] obstacles = null;
-
-     private Group root;
+     private Water[] waters = null;
 
     public HelloApplication() {
     }
@@ -282,6 +286,7 @@ public class HelloApplication extends Application {
                     packages = field.getPackages();
                     obstacles = field.getObstacles();
                     helicopter.setHelipad(helipad2);
+                    waters = field.getWaters();
                     playGame(scene);
 
                 }
@@ -368,6 +373,7 @@ public class HelloApplication extends Application {
         root.getChildren().addAll(speedMeter, fuelMeter, heightMeter);
 
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
+            if(isGameFinished) return;
             if (event.getCode().equals(KeyCode.UP)) {
                 helicopter.changeSpeed(5.0);
             } else if (event.getCode().equals(KeyCode.DOWN)) {
@@ -388,6 +394,7 @@ public class HelloApplication extends Application {
 
         });
         MyTimer.IUpdatable helicopterWrapper = (ds) -> {
+            if(isGameFinished) return;
             helicopter.update(ds,  0.995, 0.0, 750.0, 0.0, 750.0, obstacles);
             for(int i = 0; i < packages.length; ++i) {
                 if (packages[i] != null && packages[i].handleCollision(helicopter.getBoundsInParent())) {
@@ -397,6 +404,36 @@ public class HelloApplication extends Application {
                         }
                     }
                     packages[i] = null;
+                }
+            }
+
+            for(int i = 0; i < waters.length; i++){
+                if(waters[i].isHelicopterAboveWater(helicopter) && helicopter.getSpeed() < 0.5){
+                    isGameFinished = true;
+
+                    Duration duration = Duration.seconds(1);
+
+                    KeyFrame keyFrame1 = new KeyFrame(duration,
+                            event -> {
+                                // Apply scaling and fading
+                                helicopter.setScaleX(0.5);
+                                helicopter.setScaleY(0.5);
+                                helicopter.setOpacity(0.5);
+                            }
+                    );
+
+                    KeyFrame keyFrame2 = new KeyFrame(duration,
+                            event -> {
+                                // Apply scaling and fading
+                                helicopter.setScaleX(0);
+                                helicopter.setScaleY(0);
+                                helicopter.setOpacity(0);
+                            }
+                    );
+
+                    Timeline timeline = new Timeline(keyFrame1, keyFrame2);
+                    timeline.play();
+                    
                 }
             }
 
