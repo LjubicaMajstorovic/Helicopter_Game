@@ -54,6 +54,10 @@ public class FuelMeter extends Group {
 
     }
 
+    public double getFuel(){
+        return fuelInTank;
+    }
+
     public void putInFuel(double ds) {
         this.fuelInTank = Math.min(this.maxFuel, this.fuelInTank + ds * decrement);
     }

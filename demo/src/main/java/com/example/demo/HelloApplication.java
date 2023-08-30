@@ -48,6 +48,8 @@ public class HelloApplication extends Application {
     private static final double OBSTACLE_WIDTH = 110;
     private static final double OBSTACLE_HEIGHT = 8;
 
+    private int packagesToCollect;
+
     private boolean isHelicopterPicked = false;
     private boolean isFieldPicked = false;
     private boolean isGameFinished = false;
@@ -281,6 +283,7 @@ public class HelloApplication extends Application {
                     helipad1 = field.getHelipad1();
                     helipad2 = field.getHelipad2();
                     packages = field.getPackages();
+                    packagesToCollect = packages.length;
                     obstacles = field.getObstacles();
                     helicopter.setHelipad(helipad2);
                     waters = field.getWaters();
@@ -301,6 +304,7 @@ public class HelloApplication extends Application {
                     helipad1 = field.getHelipad1();
                     helipad2 = field.getHelipad2();
                     packages = field.getPackages();
+                    packagesToCollect = packages.length;
                     obstacles = field.getObstacles();
                     helicopter.setHelipad(helipad2);
                     playGame(scene);
@@ -319,6 +323,7 @@ public class HelloApplication extends Application {
                     helipad1 = field.getHelipad1();
                     helipad2 = field.getHelipad2();
                     packages = field.getPackages();
+                    packagesToCollect = packages.length;
                     obstacles = field.getObstacles();
                     helicopter.setHelipad(helipad2);
                     playGame(scene);
@@ -337,6 +342,7 @@ public class HelloApplication extends Application {
                     helipad1 = field.getHelipad1();
                     helipad2 = field.getHelipad2();
                     packages = field.getPackages();
+                    packagesToCollect = packages.length;
                     obstacles = field.getObstacles();
                     helicopter.setHelipad(helipad2);
                     playGame(scene);
@@ -397,23 +403,49 @@ public class HelloApplication extends Application {
         });
         MyTimer.IUpdatable helicopterWrapper = (ds) -> {
             if(isGameFinished) return;
+            if(fuelMeter.getFuel() == 0){
+                isGameFinished = true;
+                clock.stopTimer();
+                Label msgLost = lostMessage();
+                msgLost.getTransforms().addAll(
+                        new Translate(WINDOW_WIDTH/4.7, WINDOW_HEIGHT/3)
+                );
+                root.getChildren().addAll(msgLost);
+
+            }
             helicopter.update(ds,  0.995, 0.0, 750.0, 0.0, 750.0, obstacles);
             for(int i = 0; i < packages.length; ++i) {
                 if (packages[i] != null && packages[i].handleCollision(helicopter.getBoundsInParent())) {
                     for (Node node : root.getChildren()) {
                         if (node instanceof Field) {
                             ((Group) node).getChildren().remove(packages[i]);
+                            break;
                         }
                     }
+                    packagesToCollect--;
                     packages[i] = null;
+                    if(packagesToCollect==0){
+                        isGameFinished=true;
+                        clock.stopTimer();
+                        Label msg = successMessage();
+                        msg.getTransforms().addAll(
+                                new Translate(WINDOW_WIDTH/3.8, WINDOW_HEIGHT/3)
+                        );
+                        root.getChildren().addAll(msg);
+                    }
                 }
             }
 
             for(int i = 0; i < waters.length; i++){
                 if(waters[i].isHelicopterAboveWater(helicopter) && helicopter.getSpeed() < 0.7){
                     isGameFinished = true;
-
+                    clock.stopTimer();
                     helicopter.sinkHelicopter();
+                    Label msgLost = lostMessage();
+                    msgLost.getTransforms().addAll(
+                            new Translate(WINDOW_WIDTH/4.7, WINDOW_HEIGHT/3)
+                    );
+                    root.getChildren().addAll(msgLost);
 
                 }
             }
@@ -425,6 +457,22 @@ public class HelloApplication extends Application {
         MyTimer myTimer = new MyTimer(helicopterWrapper);
         myTimer.start();
     }
+
+    public Label successMessage(){
+        Label label = new Label("YOU WON!");
+        label.setFont(Font.font("Times New Roman", FontWeight.BOLD,70));
+        label.setTextFill(Color.RED);
+        return label;
+    }
+
+    public  Label lostMessage(){
+        Label label = new Label("GAME OVER");
+        label.setFont(Font.font("Times New Roman", FontWeight.BOLD,70));
+        label.setTextFill(Color.RED);
+        return label;
+    }
+
+
 
     public static void main(String[] args) {
         launch(new String[0]);

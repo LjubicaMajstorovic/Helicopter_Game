@@ -7,6 +7,7 @@ import javafx.scene.text.Text;
 public class Timer extends AnimationTimer {
     private Label label;
     private long startTime;
+    private boolean stop = false;
 
     public Timer(Label label){
         this.label = label;
@@ -14,6 +15,7 @@ public class Timer extends AnimationTimer {
     }
     @Override
     public void handle(long now){
+        if(stop) return;
         long elapsed = (now - startTime)/1_000_000_000;
         long seconds = elapsed%60;
         long minutes = elapsed/60;
@@ -32,4 +34,9 @@ public class Timer extends AnimationTimer {
 
         label.setText("" + min + ":" + sec);
     }
+
+    public void stopTimer(){
+        stop = true;
+    }
+
 }
