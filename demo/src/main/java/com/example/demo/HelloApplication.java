@@ -382,6 +382,11 @@ public class HelloApplication extends Application {
                 helicopter.rotate(5.0, 0.0, 750.0, 0.0, 750.0, obstacles);
             } else if (event.getCode().equals(KeyCode.SPACE)) {
                 if(!helicopter.isParkingRunning()){
+                    for(int i = 0; i < waters.length; i++){
+                        if(waters[i].isHelicopterAboveWater(helicopter)){
+                            return;
+                        }
+                    }
                     helicopter.setParkingRunning(true);
                     heightMeter.updateHeight();
                     helicopter.setParked();
@@ -397,7 +402,7 @@ public class HelloApplication extends Application {
                 if (packages[i] != null && packages[i].handleCollision(helicopter.getBoundsInParent())) {
                     for (Node node : root.getChildren()) {
                         if (node instanceof Field) {
-                            ((Group) node).getChildren().remove(packages[i]); // Call interface methods
+                            ((Group) node).getChildren().remove(packages[i]);
                         }
                     }
                     packages[i] = null;
@@ -405,21 +410,10 @@ public class HelloApplication extends Application {
             }
 
             for(int i = 0; i < waters.length; i++){
-                if(waters[i].isHelicopterAboveWater(helicopter) && helicopter.getSpeed() < 0.5){
+                if(waters[i].isHelicopterAboveWater(helicopter) && helicopter.getSpeed() < 0.7){
                     isGameFinished = true;
 
-
-                    Timeline timeline = new Timeline(
-                            new KeyFrame(Duration.ZERO,
-                                    new KeyValue(helicopter.scaleXProperty(), 1, Interpolator.LINEAR),
-                                    new KeyValue(helicopter.scaleYProperty(), 1, Interpolator.LINEAR),
-                                    new KeyValue(helicopter.opacityProperty(), 1, Interpolator.LINEAR)),
-                            new KeyFrame(Duration.seconds(2),
-                                    new KeyValue(helicopter.scaleXProperty(), 0, Interpolator.LINEAR),
-                                    new KeyValue(helicopter.scaleYProperty(), 0, Interpolator.LINEAR),
-                                    new KeyValue(helicopter.opacityProperty(), 0, Interpolator.LINEAR))
-                    );
-                    timeline.play();
+                    helicopter.sinkHelicopter();
 
                 }
             }

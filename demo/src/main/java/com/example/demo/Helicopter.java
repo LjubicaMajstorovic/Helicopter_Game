@@ -1,9 +1,6 @@
 package com.example.demo;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.ScaleTransition;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -255,7 +252,6 @@ public class Helicopter extends Group {
 
             if(parked) {
                 this.elisRotate = !elisRotate;
-                //RESITI OVO OVDE
                 if(helipad.helicopterParked(this.getBoundsInParent())){
                     parkedOnHelipad = true;
                 }
@@ -314,5 +310,55 @@ public class Helicopter extends Group {
     public void setHelipad(Helipad helipad){
         this.helipad = helipad;
     }
+
+    public void sinkHelicopter(){
+
+        double oldScale = 1.33;
+        double newScale = 1;
+
+        Timeline timeline = new Timeline(
+                new KeyFrame(
+                        Duration.ZERO,
+                        new KeyValue(scaleHelicopter.xProperty(), oldScale),
+                        new KeyValue(scaleHelicopter.yProperty(), oldScale),
+                        new KeyValue(scaleElis[0].xProperty(), oldScale),
+                        new KeyValue(scaleElis[0].yProperty(), oldScale),
+                        new KeyValue(scaleElis[1].xProperty(), oldScale),
+                        new KeyValue(scaleElis[1].yProperty(), oldScale),
+                        new KeyValue(scaleElis[2].xProperty(), oldScale),
+                        new KeyValue(scaleElis[2].yProperty(), oldScale),
+                        new KeyValue(this.opacityProperty(), 1, Interpolator.LINEAR)
+                ),
+
+                new KeyFrame(
+                        Duration.seconds(1),
+                        new KeyValue(scaleHelicopter.xProperty(), newScale),
+                        new KeyValue(scaleHelicopter.yProperty(), newScale),
+                        new KeyValue(scaleElis[0].xProperty(), newScale),
+                        new KeyValue(scaleElis[0].yProperty(), newScale),
+                        new KeyValue(scaleElis[1].xProperty(), newScale),
+                        new KeyValue(scaleElis[1].yProperty(), newScale),
+                        new KeyValue(scaleElis[2].xProperty(), newScale),
+                        new KeyValue(scaleElis[2].yProperty(), newScale),
+                        new KeyValue(this.opacityProperty(), 1, Interpolator.LINEAR)
+                ),
+
+                new KeyFrame(
+                        Duration.seconds(2),
+                        new KeyValue(scaleHelicopter.xProperty(), 0),
+                        new KeyValue(scaleHelicopter.yProperty(), 0),
+                        new KeyValue(scaleElis[0].xProperty(), 0),
+                        new KeyValue(scaleElis[0].yProperty(), 0),
+                        new KeyValue(scaleElis[1].xProperty(), 0),
+                        new KeyValue(scaleElis[1].yProperty(), 0),
+                        new KeyValue(scaleElis[2].xProperty(), 0),
+                        new KeyValue(scaleElis[2].yProperty(), 0),
+                        new KeyValue(this.opacityProperty(), 0)
+                )
+        );
+
+        timeline.play();
+    }
+
 
 }
