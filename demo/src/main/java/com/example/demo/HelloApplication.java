@@ -104,8 +104,8 @@ public class HelloApplication extends Application {
 
 
         root.getChildren().addAll(helicopter1, helicopter2, helicopter3, text1, text2, text3);
-        root.getTransforms().addAll(new Translate(375.0, 375.0));
-        Scene scene = new Scene(root, 750.0, 750.0);
+        root.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
+        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         Image grass = new Image("C:\\Users\\core I7\\IdeaProjects\\HelikopterSkelet\\src\\main\\java\\com\\example\\helikopterskelet\\grass.jpg");
         ImagePattern background = new ImagePattern(grass, 0.0, 0.0, 1.0, 1.0, true);
         scene.setFill(background);
@@ -267,8 +267,8 @@ public class HelloApplication extends Application {
         fuelMeter.getTransforms().addAll(new Translate(-332.4375, -332.4375), new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
 
         HeightMeter heightMeter = new HeightMeter();
-        heightMeter.getTransforms().addAll(new Translate(-(WINDOW_WIDTH/2)*0.99, (WINDOW_HEIGHT/2)*0.8),
-                new Rotate(180), new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
+        heightMeter.getTransforms().addAll( new Translate((WINDOW_WIDTH/2)*0.01, (WINDOW_HEIGHT)*0.9),
+                new Rotate(180));
 
 
         Label label = new Label("00:00");
