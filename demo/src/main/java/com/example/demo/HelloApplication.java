@@ -150,104 +150,6 @@ public class HelloApplication extends Application {
             }
         });
 
-        /*Group root = new Group();
-
-        Helipad helipad = new Helipad(75.0, 75.0);
-        helipad.getTransforms().addAll(new Translate(-37.5, -37.5));
-
-        Helicopter helicopter = new Helicopter(16.875, 39.37500000000001, helipad, Color.DARKORANGE, Color.BLUE, 300.00);
-
-        Translate package0position = new Translate(242.5, -257.5);
-        Translate package1position = new Translate(-257.5, -257.5);
-        Translate package2position = new Translate(242.5, 257.5);
-        Translate package3position = new Translate(-257.5, 257.5);
-        Package[] packages = new Package[]{new Package(15.0, 15.0, package0position), new Package(15.0, 15.0, package1position), new Package(15.0, 15.0, package2position), new Package(15.0, 15.0, package3position)};
-
-        Translate obstacle0position = new Translate(-OBSTACLE_WIDTH/2, -WINDOW_HEIGHT/4);
-        Translate obstacle1position = new Translate(-WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
-        Translate obstacle2position = new Translate(-OBSTACLE_WIDTH/2, WINDOW_HEIGHT/4);
-        Translate obstacle3position = new Translate(WINDOW_WIDTH/4, -OBSTACLE_WIDTH/2);
-
-        Obstacle[] obstacles = new Obstacle[]{
-                new Obstacle(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, obstacle0position),
-                new Obstacle(OBSTACLE_HEIGHT, OBSTACLE_WIDTH, obstacle1position),
-                new Obstacle(OBSTACLE_WIDTH, OBSTACLE_HEIGHT, obstacle2position),
-                new Obstacle(OBSTACLE_HEIGHT, OBSTACLE_WIDTH, obstacle3position)
-        };
-
-
-        SpeedMeter speedMeter = new SpeedMeter(helicopter.getMaxSpeed(), 7.5, 675.0);
-        speedMeter.getTransforms().addAll(new Translate(365.625, 0.0));
-
-        FuelMeter fuelMeter = new FuelMeter(75.0, helicopter);
-        fuelMeter.getTransforms().addAll(new Translate(-332.4375, -332.4375));
-
-        HeightMeter heightMeter = new HeightMeter();
-        heightMeter.getTransforms().addAll(new Translate(-(WINDOW_WIDTH/2)*0.99, (WINDOW_HEIGHT/2)*0.8),
-                new Rotate(180));
-
-
-        Label label = new Label("00:00");
-        label.setStyle("-fx-text-fill: red; -fx-font-size: 20px;");
-
-        root.getChildren().addAll(label);
-        label.getTransforms().addAll(new Translate(-WINDOW_WIDTH/2.1, WINDOW_HEIGHT/2.19));
-        Timer clock = new Timer(label);
-        clock.start();
-        root.getChildren().addAll(helipad, speedMeter, fuelMeter, heightMeter, helicopter);
-        root.getChildren().addAll(packages);
-        root.getChildren().addAll(obstacles);
-        root.getTransforms().addAll(new Translate(375.0, 375.0));
-
-        Scene scene = new Scene(root, 750.0, 750.0);
-
-
-
-
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
-            if (event.getCode().equals(KeyCode.UP)) {
-                helicopter.changeSpeed(5.0);
-            } else if (event.getCode().equals(KeyCode.DOWN)) {
-                helicopter.changeSpeed(-5.0);
-            } else if (event.getCode().equals(KeyCode.LEFT)) {
-                helicopter.rotate(-5.0, 0.0, 750.0, 0.0, 750.0, obstacles);
-
-            } else if (event.getCode().equals(KeyCode.RIGHT)) {
-                helicopter.rotate(5.0, 0.0, 750.0, 0.0, 750.0, obstacles);
-            } else if (event.getCode().equals(KeyCode.SPACE)) {
-                if(!helicopter.isParkingRunning()){
-                    helicopter.setParkingRunning(true);
-                    heightMeter.updateHeight();
-                    helicopter.setParked();
-
-                }
-            }
-
-        });
-        MyTimer.IUpdatable helicopterWrapper = (ds) -> {
-            helicopter.update(ds,  0.995, 0.0, 750.0, 0.0, 750.0, obstacles);
-
-
-            for(int i = 0; i < packages.length; ++i) {
-                if (packages[i] != null && packages[i].handleCollision(helicopter.getBoundsInParent())) {
-                    root.getChildren().remove(packages[i]);
-                    packages[i] = null;
-                }
-            }
-
-
-            speedMeter.changeSpeed(helicopter.getSpeed());
-            fuelMeter.updateFuel(helicopter.getSpeed());
-        };
-        MyTimer myTimer = new MyTimer(helicopterWrapper);
-        myTimer.start();
-        Image grass = new Image("C:\\Users\\core I7\\IdeaProjects\\HelikopterSkelet\\src\\main\\java\\com\\example\\helikopterskelet\\grass.jpg");
-        ImagePattern background = new ImagePattern(grass, 0.0, 0.0, 1.0, 1.0, true);
-        scene.setFill(background);
-        stage.setTitle("Helicopter");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();*/
     }
 
     private void pickField(Scene scene){
@@ -307,6 +209,7 @@ public class HelloApplication extends Application {
                     packagesToCollect = packages.length;
                     obstacles = field.getObstacles();
                     helicopter.setHelipad(helipad2);
+                    waters = field.getWaters();
                     playGame(scene);
                 }
             }
@@ -326,6 +229,7 @@ public class HelloApplication extends Application {
                     packagesToCollect = packages.length;
                     obstacles = field.getObstacles();
                     helicopter.setHelipad(helipad2);
+                    waters = field.getWaters();
                     playGame(scene);
                 }
             }
@@ -345,6 +249,7 @@ public class HelloApplication extends Application {
                     packagesToCollect = packages.length;
                     obstacles = field.getObstacles();
                     helicopter.setHelipad(helipad2);
+                    waters = field.getWaters();
                     playGame(scene);
                 }
             }

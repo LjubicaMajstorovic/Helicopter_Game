@@ -1,6 +1,8 @@
 package com.example.demo;
 
 import javafx.scene.Group;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 
 public class Field4 extends Group implements Field{
@@ -8,6 +10,7 @@ public class Field4 extends Group implements Field{
     private Helipad helipad2;
     private Obstacle[] obstacles;
     private Package[] packages;
+    private Water[] waters;
 
     private static final double HELIPAD_WIDTH = 75.0;
     private static final double HELIPAD_HEIGHT = 75.0;
@@ -36,12 +39,21 @@ public class Field4 extends Group implements Field{
         return packages;
     }
 
+    public Water[] getWaters() { return waters; }
+
+
     public Field4(Helicopter helicopter){
         helipad1 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT, true);
         helipad2 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT, false);
 
         helipad1.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2, -HELIPAD_HEIGHT/2));
         helipad2.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2.5, WINDOW_WIDTH/3));
+
+        waters = new Water[]{
+                new Water(new Transform[] {new Translate(-WINDOW_WIDTH/2.5, 0)}),
+                new Water(new Transform[]{new Translate(WINDOW_WIDTH/3.2, 0), new Rotate(90)}),
+                new Water(new Transform[]{new Translate(WINDOW_WIDTH/3.2, WINDOW_HEIGHT/7), new Rotate(90)})
+        };
 
         Translate package0position = new Translate(242.5, -257.5);
         Translate package1position = new Translate(-257.5, -257.5);
@@ -68,6 +80,7 @@ public class Field4 extends Group implements Field{
         };
 
         super.getChildren().addAll(helipad1, helipad2);
+        super.getChildren().addAll(waters);
         if(helicopter != null){
             helicopter.getTransforms().addAll(new Translate(-WINDOW_WIDTH/2, -WINDOW_HEIGHT/2));
             super.getChildren().addAll(helicopter);

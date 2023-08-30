@@ -2,6 +2,7 @@ package com.example.demo;
 
 import javafx.scene.Group;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
 import javafx.scene.transform.Translate;
 
 public class Field3 extends Group implements Field{
@@ -9,6 +10,7 @@ public class Field3 extends Group implements Field{
     private Helipad helipad2;
     private Obstacle[] obstacles;
     private Package[] packages;
+    private Water[] waters;
 
     private static final double HELIPAD_WIDTH = 75.0;
     private static final double HELIPAD_HEIGHT = 75.0;
@@ -37,12 +39,20 @@ public class Field3 extends Group implements Field{
         return packages;
     }
 
+    public Water[] getWaters() { return waters; }
+
     public Field3(Helicopter helicopter){
         helipad1 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT, true);
         helipad2 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT, false);
 
         helipad1.getTransforms().addAll(new Translate(-HELIPAD_WIDTH/2, -HELIPAD_HEIGHT/2));
         helipad2.getTransforms().addAll(new Translate(-WINDOW_WIDTH/3, -WINDOW_HEIGHT/2.5));
+
+        waters = new Water[]{
+                new Water(new Transform[] {new Translate(-WINDOW_WIDTH/2.3, -WINDOW_HEIGHT/7)}),
+                new Water(new Transform[]{new Translate(0, -WINDOW_HEIGHT/2.5), new Rotate(90)}),
+                new Water(new Transform[]{new Translate(WINDOW_WIDTH/3.2, WINDOW_HEIGHT/9), new Rotate(90)})
+        };
 
         Translate package0position = new Translate(242.5, -257.5);
         Translate package1position = new Translate(-WINDOW_WIDTH/2.3, -257.5);
@@ -58,7 +68,7 @@ public class Field3 extends Group implements Field{
         Translate obstacle0position = new Translate(-WINDOW_WIDTH/4, -WINDOW_HEIGHT/4);
         Translate obstacle1position = new Translate(-WINDOW_WIDTH/4, WINDOW_HEIGHT/4);
         Translate obstacle2position = new Translate(WINDOW_WIDTH/10, WINDOW_HEIGHT/4);
-        Translate obstacle3position = new Translate(WINDOW_WIDTH/4, -OBSTACLE_WIDTH/1.7);
+        Translate obstacle3position = new Translate(WINDOW_WIDTH/3, -OBSTACLE_WIDTH/1.7);
 
 
         obstacles = new Obstacle[]{
@@ -71,6 +81,7 @@ public class Field3 extends Group implements Field{
         obstacles[3].getTransforms().addAll(new Rotate(150));
 
         super.getChildren().addAll(helipad1, helipad2);
+        super.getChildren().addAll(waters);
         if(helicopter != null){
             helicopter.getTransforms().addAll(new Translate(-WINDOW_WIDTH/2, -WINDOW_HEIGHT/2));
             super.getChildren().addAll(helicopter);
