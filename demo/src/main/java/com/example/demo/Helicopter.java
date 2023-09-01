@@ -44,7 +44,7 @@ public class Helicopter extends Group {
     private boolean parkingRunning = false;
     private boolean parkedOnHelipad = false;
 
-
+    private boolean helicopterMove = true;
 
 
     public Helicopter(double width, double height, Color color1, Color color2, double maxSpeed) {
@@ -123,7 +123,7 @@ public class Helicopter extends Group {
         parkingRunning = running;
     }
 
-    private boolean isWallOrObstaclesHit(double left, double right, double up, double down, Obstacle[] obstacles) {
+    public boolean isWallOrObstaclesHit(double left, double right, double up, double down, Obstacle[] obstacles) {
         Bounds cockpitBounds = this.boundCircle.localToScene ( this.boundCircle.getBoundsInLocal ( ) );
         Bounds tailBounds    = this.tail.localToScene ( this.tail.getBoundsInLocal ( ) );
         Bounds horizontalPartBounds = this.horizontalPartOfTail.localToScene(this.horizontalPartOfTail.getBoundsInLocal());
@@ -156,7 +156,7 @@ public class Helicopter extends Group {
 
 
     public void rotate(double dAngle, double left, double right, double up, double down, Obstacle[] obstacles) {
-        if (!this.parked) {
+        if (!this.parked && helicopterMove) {
             double oldAngle = this.rotate.getAngle();
             double newAngle = oldAngle + dAngle;
             this.rotate.setAngle(newAngle);
@@ -264,10 +264,14 @@ public class Helicopter extends Group {
 
     }
 
+    public void setSpeed(double speed) { this.speed = speed; }
+
     public boolean isParked(){
         return parked;
     }
+    public boolean isNoFuel() { return noFuel; }
 
+    public void setHelicopterMove(boolean move) { this.helicopterMove = move; }
 
 
     public void update(double ds, double speedDamp, double left, double right, double up, double down, Obstacle[] obstacles) {
@@ -276,7 +280,7 @@ public class Helicopter extends Group {
             this.elisRotation.setAngle(odlAngle + ds * this.ugaonaBrzina);
         }
 
-        if (!this.parked && !noFuel) {
+        if (!this.parked && !noFuel && helicopterMove) {
 
             double oldX = this.position.getX();
             double oldY = this.position.getY();
@@ -284,10 +288,10 @@ public class Helicopter extends Group {
             double newY = oldY + ds * this.speed * this.direction.getY();
 
 
-
-
             this.position.setX(newX);
             this.position.setY(newY);
+
+
             if (this.isWallOrObstaclesHit(left, right, up, down, obstacles)) {
                 this.speed = 0.0;
                 this.position.setX(oldX);
@@ -295,7 +299,6 @@ public class Helicopter extends Group {
             } else {
                 this.speed *= speedDamp;
             }
-
 
         }
     }
@@ -306,6 +309,9 @@ public class Helicopter extends Group {
     public boolean isHelicopterParkedOnHelipad(){
         return parkedOnHelipad;
     }
+
+    public Translate getPosition() { return position; }
+    public Rotate getRotation() { return rotate; }
 
     public void setHelipad(Helipad helipad){
         this.helipad = helipad;

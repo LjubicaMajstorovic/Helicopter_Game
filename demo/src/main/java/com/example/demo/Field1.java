@@ -41,6 +41,7 @@ public class Field1 extends Group implements Field {
     public Water[] getWaters() { return waters; }
 
     public Field1(Helicopter helicopter){
+
         helipad1 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT, true);
         helipad2 = new Helipad(HELIPAD_WIDTH, HELIPAD_HEIGHT, false);
 
@@ -86,7 +87,6 @@ public class Field1 extends Group implements Field {
         }
         super.getChildren().addAll(packages);
         super.getChildren().addAll(obstacles);
-
 
     }
 }

@@ -53,15 +53,18 @@ public class HelloApplication extends Application {
     private boolean isHelicopterPicked = false;
     private boolean isFieldPicked = false;
     private boolean isGameFinished = false;
-     private boolean parking;
-     private Helicopter helicopter = null;
-     private HeightMeter heightMeter = null;
+    private boolean parking;
 
-     private Helipad helipad1 = null;
-     private Helipad helipad2 = null;
-     private Package[] packages = null;
-     private Obstacle[] obstacles = null;
-     private Water[] waters = null;
+    private boolean helicopterMove = true;
+    private Helicopter helicopter = null;
+    private HeightMeter heightMeter = null;
+    private Helipad helipad1 = null;
+    private Helipad helipad2 = null;
+    private Package[] packages = null;
+    private Obstacle[] obstacles = null;
+    private Water[] waters = null;
+
+    private Group fld;
 
     public HelloApplication() {
     }
@@ -189,6 +192,7 @@ public class HelloApplication extends Application {
                     obstacles = field.getObstacles();
                     helicopter.setHelipad(helipad2);
                     waters = field.getWaters();
+                    fld = field;
                     playGame(scene);
 
                 }
@@ -210,6 +214,7 @@ public class HelloApplication extends Application {
                     obstacles = field.getObstacles();
                     helicopter.setHelipad(helipad2);
                     waters = field.getWaters();
+                    fld = field;
                     playGame(scene);
                 }
             }
@@ -230,6 +235,7 @@ public class HelloApplication extends Application {
                     obstacles = field.getObstacles();
                     helicopter.setHelipad(helipad2);
                     waters = field.getWaters();
+                    fld = field;
                     playGame(scene);
                 }
             }
@@ -250,6 +256,7 @@ public class HelloApplication extends Application {
                     obstacles = field.getObstacles();
                     helicopter.setHelipad(helipad2);
                     waters = field.getWaters();
+                    fld = field;
                     playGame(scene);
                 }
             }
@@ -259,6 +266,8 @@ public class HelloApplication extends Application {
 
     public void playGame(Scene scene){
         Group root = (Group) scene.getRoot();
+        RootController rc = new RootController(fld, helicopter);
+
         this.helicopter.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
         SpeedMeter speedMeter = new SpeedMeter(helicopter.getMaxSpeed(), 7.5, 675.0);
         speedMeter.getTransforms().addAll(new Translate(365.625, 0.0), new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
@@ -283,14 +292,26 @@ public class HelloApplication extends Application {
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
             if(isGameFinished) return;
             if (event.getCode().equals(KeyCode.UP)) {
+
                 helicopter.changeSpeed(5.0);
+
             } else if (event.getCode().equals(KeyCode.DOWN)) {
+
                 helicopter.changeSpeed(-5.0);
+
             } else if (event.getCode().equals(KeyCode.LEFT)) {
-                helicopter.rotate(-5.0, 0.0, 750.0, 0.0, 750.0, obstacles);
+                if (helicopterMove) {
+                    helicopter.rotate(-5.0, 0.0, 750.0, 0.0, 750.0, obstacles);
+                } else {
+                    rc.rotate(-5.0, 0.0, 750.0, 0.0, 750.0, obstacles);
+                }
 
             } else if (event.getCode().equals(KeyCode.RIGHT)) {
-                helicopter.rotate(5.0, 0.0, 750.0, 0.0, 750.0, obstacles);
+                if(helicopterMove) {
+                    helicopter.rotate(5.0, 0.0, 750.0, 0.0, 750.0, obstacles);
+                } else {
+                    rc.rotate(5.0, 0.0, 750.0, 0.0, 750.0, obstacles);
+                }
             } else if (event.getCode().equals(KeyCode.SPACE)) {
                 if(!helicopter.isParkingRunning()){
                     for(int i = 0; i < waters.length; i++){
@@ -303,6 +324,14 @@ public class HelloApplication extends Application {
                     helicopter.setParked();
 
                 }
+            } else if (event.getCode().equals(KeyCode.DIGIT1)){
+                rc.reset();
+                helicopterMove = true;
+                helicopter.setHelicopterMove(true);
+            } else if (event.getCode().equals(KeyCode.DIGIT2)){
+                rc.prepare();
+                helicopterMove = false;
+                helicopter.setHelicopterMove(false);
             }
 
         });
@@ -319,6 +348,8 @@ public class HelloApplication extends Application {
 
             }
             helicopter.update(ds,  0.995, 0.0, 750.0, 0.0, 750.0, obstacles);
+            if(!helicopterMove) rc.update(ds,  0.995, 0.0, 750.0, 0.0, 750.0, obstacles);
+
             for(int i = 0; i < packages.length; ++i) {
                 if (packages[i] != null && packages[i].handleCollision(helicopter.getBoundsInParent())) {
                     for (Node node : root.getChildren()) {
