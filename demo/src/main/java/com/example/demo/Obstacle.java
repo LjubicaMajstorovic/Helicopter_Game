@@ -12,7 +12,7 @@ public class Obstacle extends Rectangle {
         super(width, height);
         super.getTransforms().addAll(position);
 
-        Image image = new Image("C:/Users/core I7/Documents/GitHub_Grafika/Helicopter_Game/demo/images/wood.jpg");
+        Image image = new Image(getClass().getResource("images/wood.jpg").toString());
         super.setFill(Color.TRANSPARENT);
 
         ImagePattern imagePattern= new ImagePattern(image, 0.0, 0.0, 1.0, 1.0, true);

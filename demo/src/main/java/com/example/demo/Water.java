@@ -28,7 +28,7 @@ public class Water extends Path {
                 new QuadCurveTo(((random.nextDouble() + 0.001)*WATER_WIDTH/5) + WATER_WIDTH/3, (random.nextDouble() + 0.001)*(-WATER_HEIGHT*0.5), WATER_WIDTH*2/3, -WATER_HEIGHT*random.nextDouble()),
                 new QuadCurveTo((random.nextDouble() + 0.001)*WATER_WIDTH/5, (random.nextDouble() + 0.0001)*(-WATER_HEIGHT*0.5), WATER_WIDTH/3, -WATER_HEIGHT*random.nextDouble()));
 
-        Image image = new Image("C:\\Users\\core I7\\Documents\\GitHub_Grafika\\Helicopter_Game\\demo\\images\\water.jpg");
+        Image image = new Image(getClass().getResource("images/water.jpg").toString());
         ImagePattern imagePattern = new ImagePattern(image);
         super.setFill(imagePattern);
         super.setStroke(Color.TRANSPARENT);

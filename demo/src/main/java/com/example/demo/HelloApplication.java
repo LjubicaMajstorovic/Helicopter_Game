@@ -109,7 +109,7 @@ public class HelloApplication extends Application {
         root.getChildren().addAll(helicopter1, helicopter2, helicopter3, text1, text2, text3);
         root.getTransforms().addAll(new Translate(WINDOW_WIDTH/2, WINDOW_HEIGHT/2));
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-        Image grass = new Image("C:\\Users\\core I7\\IdeaProjects\\HelikopterSkelet\\src\\main\\java\\com\\example\\helikopterskelet\\grass.jpg");
+        Image grass = new Image(getClass().getResource("images/grass.jpg").toString());
         ImagePattern background = new ImagePattern(grass, 0.0, 0.0, 1.0, 1.0, true);
         scene.setFill(background);
         stage.setTitle("Helicopter");
@@ -371,6 +371,7 @@ public class HelloApplication extends Application {
                     }
                 }
             }
+
 
             for(int i = 0; i < waters.length; i++){
                 if(waters[i].isHelicopterAboveWater(helicopter) && helicopter.getSpeed() < 0.7){
